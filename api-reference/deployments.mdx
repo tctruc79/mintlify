@@ -1,5 +1,5 @@
 ---
-title: "Deployments API — Trigger and Monitor Builds"
+title: "Deployments API — Trigger, List, and Monitor Builds"
 sidebarTitle: "Deployments"
 description: "Trigger, list, and monitor Mintlify documentation deployments via API. Integrate docs deploys into your CI/CD pipelines and release workflows."
 ---
@@ -64,6 +64,13 @@ curl "https://api.mintlify.com/v1/deployments?projectId=proj_xxx" \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
+### Query Parameters
+
+<ParamField query="projectId" type="string" required>
+  The unique identifier of the Mintlify project whose deployments you want to
+  list. Find your project ID in **Settings → General** in the dashboard.
+</ParamField>
+
 ### Response
 
 ```json
@@ -118,6 +125,15 @@ Retrieve the full details of a single deployment by its ID, including build comp
 curl https://api.mintlify.com/v1/deployments/dep_abc123 \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
+
+### Path Parameters
+
+<ParamField path="deploymentId" type="string" required>
+  The unique identifier of the deployment to retrieve. Deployment IDs are
+  returned in the `deploymentId` field when you [trigger a
+  deployment](#trigger-a-deployment) and in the `id` field of the [List
+  Deployments](#list-deployments) response.
+</ParamField>
 
 ### Response
 

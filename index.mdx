@@ -1,25 +1,10 @@
 ---
-title: "Mintlify: Beautiful Docs from Your Git Repo"
+title: "Mintlify Docs — Beautiful Documentation, Simply Shipped"
 sidebarTitle: "Home"
 description: "Build, publish, and maintain world-class documentation with Mintlify. Git-based workflow, AI writing tools, rich components, and instant deploys."
 ---
 
-Welcome to Mintlify — the documentation platform built for modern developer teams. Connect your Git repository, write pages in MDX, and ship a beautiful, fully hosted docs site without managing any infrastructure. Every push to your repo is a deploy.
-
-<CardGroup cols={2}>
-  <Card title="Introduction" icon="book" href="/introduction">
-    Learn what Mintlify is, how it works, and why thousands of teams use it to ship world-class docs.
-  </Card>
-  <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Create your account, connect your repo, and publish your first page in under five minutes.
-  </Card>
-  <Card title="Components" icon="code" href="/authoring/components">
-    Explore the full library of interactive MDX components — cards, tabs, accordions, code blocks, and more.
-  </Card>
-  <Card title="AI Writing" icon="wand-magic-sparkles" href="/ai/ai-writing">
-    Use Mintlify's built-in AI tools to draft, improve, and maintain your documentation automatically.
-  </Card>
-</CardGroup>
+Mintlify is the documentation platform built for modern developer teams. Connect your Git repository, write pages in MDX, and publish a beautiful, fully hosted docs site — no infrastructure to manage, no CI pipeline to configure. Every push to your repo is a deploy.
 
 ## Get up and running in four steps
 
@@ -28,26 +13,97 @@ Welcome to Mintlify — the documentation platform built for modern developer te
     Sign up at [app.mintlify.com](https://app.mintlify.com). No credit card required to get started.
   </Step>
   <Step title="Connect your repository">
-    Link your GitHub or GitLab repository from the Mintlify dashboard. Mintlify watches your default branch for changes.
+    Link your GitHub repository from the Mintlify dashboard. Mintlify watches your default branch and triggers a new build on every push.
   </Step>
   <Step title="Configure docs.json">
-    Open `docs.json` at the root of your docs folder. Set your site name, colors, logo, and navigation structure.
+    Open `docs.json` at the root of your docs folder. Set your site name, colors, logo, and navigation structure to match your brand.
   </Step>
   <Step title="Push to deploy">
-    Commit your MDX pages and push to your connected branch. Mintlify builds and publishes your site automatically — no CI pipeline required.
+    Commit your MDX pages and push to your connected branch. Mintlify builds and publishes your site automatically within seconds.
   </Step>
 </Steps>
 
-## Explore the platform
+## Start here
 
 <CardGroup cols={2}>
-  <Card title="Configuration" icon="gear" href="/configuration/settings">
-    Customize your site's branding, navigation, custom domains, and advanced settings through `docs.json`.
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    Learn what Mintlify is, how it works, and why thousands of teams use it to ship world-class documentation.
   </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create your account, connect your repo, and publish your first page in under five minutes.
+  </Card>
+  <Card title="Local Development" icon="laptop-code" href="/local-development">
+    Run a live preview of your docs site on your machine before pushing changes to your repository.
+  </Card>
+  <Card title="Components" icon="puzzle-piece" href="/authoring/components">
+    Explore the full library of interactive MDX components — cards, tabs, accordions, callouts, and more.
+  </Card>
+</CardGroup>
+
+## Authoring & AI
+
+<CardGroup cols={2}>
+  <Card title="Code Blocks" icon="code" href="/authoring/code-blocks">
+    Syntax-highlighted, copyable code blocks with line highlighting, filename labels, and multi-file tabs.
+  </Card>
+  <Card title="AI Writing" icon="wand-magic-sparkles" href="/ai/ai-writing">
+    Use Mintlify's built-in AI tools to draft, improve, and maintain your documentation automatically.
+  </Card>
+  <Card title="AI Tools Setup" icon="robot" href="/ai/ai-tools-setup">
+    Configure the AI writing assistant and connect it to your docs project for contextual suggestions.
+  </Card>
+  <Card title="MCP Integration" icon="plug" href="/ai/mcp">
+    Connect Mintlify to AI coding agents via the Model Context Protocol for automated doc generation.
+  </Card>
+</CardGroup>
+
+## Configuration
+
+<CardGroup cols={2}>
+  <Card title="Settings" icon="gear" href="/configuration/settings">
+    Configure your site-wide settings — name, metadata, fonts, analytics, and more — via `docs.json`.
+  </Card>
+  <Card title="Navigation" icon="bars" href="/configuration/navigation">
+    Define your sidebar structure, tab groups, and top-level navigation in `docs.json`.
+  </Card>
+  <Card title="Branding" icon="palette" href="/configuration/branding">
+    Set your logo, favicon, primary colors, and dark-mode variants to match your brand identity.
+  </Card>
+  <Card title="Custom Domain" icon="globe" href="/configuration/custom-domain">
+    Serve your docs from your own domain with a simple DNS change and automatic TLS provisioning.
+  </Card>
+</CardGroup>
+
+## Publishing
+
+<CardGroup cols={2}>
   <Card title="GitHub Integration" icon="github" href="/publishing/github-integration">
     Learn how Mintlify connects to your repository, handles branch previews, and triggers deployments on push.
   </Card>
-  <Card title="API Reference" icon="code" href="/api-reference/introduction">
-    Auto-generate interactive API reference pages from your OpenAPI spec with zero extra configuration.
+  <Card title="Deployment" icon="cloud-arrow-up" href="/publishing/deployment">
+    Understand the build and deployment pipeline, preview URLs, and production promotion workflow.
+  </Card>
+  <Card title="Versioning" icon="code-branch" href="/publishing/versioning">
+    Maintain multiple versions of your docs side-by-side, with a version switcher built in automatically.
+  </Card>
+</CardGroup>
+
+## API Reference
+
+<CardGroup cols={2}>
+  <Card title="API Introduction" icon="book" href="/api-reference/introduction">
+    Overview of the Mintlify REST API — authentication, base URLs, rate limits, and response formats.
+  </Card>
+  <Card title="Authentication" icon="key" href="/api-reference/authentication">
+    Generate and manage API keys for programmatic access to your Mintlify projects.
+  </Card>
+  <Card title="Pages API" icon="file-lines" href="/api-reference/pages">
+    Create, update, and delete documentation pages programmatically via the Mintlify REST API.
+  </Card>
+  <Card title="Deployments API" icon="rocket" href="/api-reference/deployments">
+    Trigger and monitor deployments, retrieve build logs, and manage deployment history via the API.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks">
+    Subscribe to deployment and page events to integrate Mintlify into your existing tooling and workflows.
   </Card>
 </CardGroup>

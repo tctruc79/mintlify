@@ -1,5 +1,5 @@
 ---
-title: "Customize Colors, Fonts, and Logo in Mintlify"
+title: "Customize Branding: Colors, Logo, Fonts, and Themes"
 sidebarTitle: "Branding"
 description: "Apply your brand to Mintlify docs by configuring primary colors, logo images, favicon, and typography. All changes take effect on your next deploy."
 ---
@@ -125,29 +125,15 @@ The `theme` field selects the overall layout and visual personality of your site
   One of Mintlify's built-in theme names. Defaults to `luma`.
 </ParamField>
 
-<CardGroup cols={2}>
-  <Card title="luma" icon="sparkles">
-    **Sleek, minimal.** The default theme. Great for developer-focused products that want a clean, distraction-free reading experience.
-  </Card>
-  <Card title="willow" icon="leaf">
-    **Elegant.** Refined typography and subtle details. A natural fit for design-focused products and creative tools.
-  </Card>
-  <Card title="palm" icon="sun">
-    **Spacious, airy.** Generous whitespace and relaxed line heights. Ideal for long-form, narrative documentation.
-  </Card>
-  <Card title="almond" icon="circle">
-    **Soft, approachable.** Rounded corners and warm neutrals make this the right pick for consumer-facing or onboarding-heavy docs.
-  </Card>
-  <Card title="aspen" icon="bolt">
-    **Bold, technical.** High-contrast layout that projects confidence. Works well for infrastructure, DevOps, and platform engineering products.
-  </Card>
-  <Card title="maple" icon="book-open">
-    **Warm, sidebar-focused.** The sidebar is the star here — best suited to large documentation sets with deep, multi-level navigation trees.
-  </Card>
-  <Card title="sequoia" icon="table">
-    **Dense, information-rich.** A compact layout that maximizes content density. The go-to choice for API-heavy products with extensive reference material.
-  </Card>
-</CardGroup>
+| Theme | Character | Best for |
+|-------|-----------|----------|
+| `luma` | Sleek, minimal | Developer-focused products that want a clean, distraction-free reading experience. **Default.** |
+| `willow` | Elegant, refined | Design-focused products and creative tools where aesthetics matter. |
+| `palm` | Spacious, airy | Long-form, narrative documentation with relaxed line heights. |
+| `almond` | Soft, approachable | Consumer-facing or onboarding-heavy docs with rounded, warm styling. |
+| `aspen` | Bold, technical | Infrastructure, DevOps, and platform engineering products. |
+| `maple` | Warm, sidebar-focused | Large documentation sets with deep, multi-level navigation trees. |
+| `sequoia` | Dense, information-rich | API-heavy products with extensive reference material. |
 
 ```json
 "theme": "maple"

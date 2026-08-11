@@ -1,26 +1,18 @@
 ---
-title: "Connect Mintlify to Your GitHub Repository"
+title: "GitHub Integration: Connect Mintlify to Your Repository"
 sidebarTitle: "GitHub Integration"
-description: "Install the Mintlify GitHub app to enable automatic deployment. Every push to your default branch updates your live documentation site within seconds."
+description: "Install the Mintlify GitHub App to enable automatic deployments. Every push to your connected branch updates your live docs site within seconds."
 ---
 
-Mintlify deploys documentation directly from your GitHub repository. Install the Mintlify GitHub app once, and every push to your main branch automatically updates your live site — no CI/CD configuration required. There is nothing to maintain: no build scripts, no deployment pipelines, and no server infrastructure to manage.
+Mintlify deploys documentation directly from your GitHub repository. Install the Mintlify GitHub App once, and every push to your main branch automatically updates your live site — no CI/CD configuration required. There is nothing to maintain: no build scripts, no deployment pipelines, and no server infrastructure to manage.
 
 ## Prerequisites
 
 Before you begin, make sure you have the following:
 
-<CardGroup cols={3}>
-  <Card title="Mintlify Account" icon="user">
-    A Mintlify account with an active workspace at [app.mintlify.com](https://app.mintlify.com).
-  </Card>
-  <Card title="GitHub Account" icon="github">
-    A GitHub account with access to the repository where your documentation lives.
-  </Card>
-  <Card title="Admin Access" icon="shield-check">
-    Admin permissions on the GitHub repository you want to connect to Mintlify.
-  </Card>
-</CardGroup>
+- **Mintlify account** — an active workspace at [app.mintlify.com](https://app.mintlify.com).
+- **GitHub account** — access to the repository where your documentation lives.
+- **Admin permissions** — you must be a repository admin to install the GitHub App.
 
 ## Connecting your repository
 
@@ -64,7 +56,7 @@ If your repository contains multiple projects and your documentation lives in a 
 
 For example, if your repository is structured like this:
 
-```
+```text
 my-monorepo/
 ├── apps/
 │   └── backend/

@@ -1,7 +1,7 @@
 ---
-title: "Mintlify Webhooks — Real-time Deployment Events"
+title: "Webhooks — Real-time Deployment Event Notifications"
 sidebarTitle: "Webhooks"
-description: "Receive real-time webhook events when your Mintlify docs site deploys, fails, or changes. Configure webhook endpoints in the dashboard to automate notifications."
+description: "Receive real-time webhook events when your Mintlify docs site deploys or fails. Verify signatures and automate workflows with webhook notifications."
 ---
 
 Mintlify sends webhook events to your configured endpoint whenever significant events occur in your docs site — such as successful deployments, build failures, or page updates. Use webhooks to trigger notifications, sync external systems, or automate workflows without polling the API. Your endpoint receives an HTTP `POST` request with a JSON payload describing the event.
@@ -43,7 +43,24 @@ You register webhook endpoints from the Mintlify dashboard. Each endpoint can su
 
 ## Webhook Payload
 
-Every webhook request includes a JSON body describing the event, the timestamp it occurred, and relevant data about the affected resource. Below is an example `deployment.success` payload:
+Every webhook request includes a JSON body describing the event, the timestamp it occurred, and relevant data about the affected resource.
+
+**`deployment.started`** — sent when a new build begins:
+
+```json
+{
+  "event": "deployment.started",
+  "timestamp": "2024-01-15T10:29:00Z",
+  "data": {
+    "deploymentId": "dep_xxx",
+    "projectId": "proj_xxx",
+    "url": "https://docs.yourcompany.com",
+    "commit": "abc123"
+  }
+}
+```
+
+**`deployment.success`** — sent when a build completes successfully:
 
 ```json
 {
@@ -58,7 +75,7 @@ Every webhook request includes a JSON body describing the event, the timestamp i
 }
 ```
 
-For `deployment.failed` events, the `data` object also includes an `error` field with a description of what went wrong:
+**`deployment.failed`** — sent when a build fails. The `data` object includes an `error` field with a description of what went wrong:
 
 ```json
 {
@@ -88,9 +105,11 @@ function verifyWebhook(payload, signature, secret) {
     .createHmac('sha256', secret)
     .update(payload)
     .digest('hex');
+  // Use timingSafeEqual on equal-length buffers to prevent timing attacks.
+  // Both values are hex strings, so their byte lengths are always identical.
   return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expected)
+    Buffer.from(expected, 'hex'),
+    Buffer.from(signature, 'hex')
   );
 }
 ```

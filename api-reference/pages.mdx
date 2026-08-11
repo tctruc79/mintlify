@@ -1,5 +1,5 @@
 ---
-title: "Pages API — Manage Documentation Pages"
+title: "Pages API — Retrieve and Update Documentation Pages"
 sidebarTitle: "Pages"
 description: "List, retrieve, and update documentation pages via the Mintlify API. Automate content management and integrate docs into your publishing workflows."
 ---
@@ -107,6 +107,13 @@ curl https://api.mintlify.com/v1/pages/page_abc123 \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
+### Path Parameters
+
+<ParamField path="pageId" type="string" required>
+  The unique identifier of the page to retrieve. Page IDs are returned in the
+  `id` field of the [List Pages](#list-pages) response.
+</ParamField>
+
 ### Response
 
 ```json
@@ -167,6 +174,13 @@ curl -X PATCH https://api.mintlify.com/v1/pages/page_abc123 \
     "description": "Get up and running with Mintlify in under five minutes."
   }'
 ```
+
+### Path Parameters
+
+<ParamField path="pageId" type="string" required>
+  The unique identifier of the page to update. Page IDs are returned in the
+  `id` field of the [List Pages](#list-pages) response.
+</ParamField>
 
 ### Request Body
 

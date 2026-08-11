@@ -1,5 +1,5 @@
 ---
-title: "Code Blocks and Syntax Highlighting in Mintlify"
+title: "Code Blocks and Syntax Highlighting in Mintlify Docs"
 sidebarTitle: "Code Blocks"
 description: "Add syntax-highlighted code blocks with titles, line numbers, diff markers, and multi-language tabs. Mintlify uses Shiki for automatic theming."
 ---
@@ -44,17 +44,17 @@ Mintlify supports all [languages recognized by Shiki](https://shiki.matsu.io/lan
 
 ## Code block options
 
-You can enrich any code block with additional options by adding them as a space-separated list after the language tag.
+You can enrich any code block with additional options by adding them as a space-separated list after the language tag on the opening fence.
 
-**Title / filename** — add a `title` attribute to label the block with a filename or descriptive heading:
+**Title / filename** — add a `title` attribute to label the block with a filename or descriptive heading. Write it as `title="your-filename.ext"` directly after the language identifier:
 
-````mdx
+```
 ```ts title="lib/api.ts"
 export async function getUser(id: string) {
   return fetch(`/api/users/${id}`).then(r => r.json());
 }
 ```
-````
+```
 
 ```ts title="lib/api.ts"
 export async function getUser(id: string) {
@@ -62,9 +62,9 @@ export async function getUser(id: string) {
 }
 ```
 
-**Line numbers** — add `lines` to render line numbers in the gutter:
+**Line numbers** — add `lines` after the language tag to render line numbers in the left gutter:
 
-````mdx
+```
 ```python lines
 import os
 
@@ -72,11 +72,11 @@ def main():
     key = os.getenv("API_KEY")
     print(f"Using key: {key}")
 ```
-````
+```
 
-**Highlight** — use `{n}` or `{n-m}` to highlight specific lines:
+**Highlight** — use `{n}` or `{n-m}` after the language tag to highlight specific line numbers with a background color:
 
-````mdx
+```
 ```js {3-5}
 function setup(config) {
   const client = new Client();
@@ -86,11 +86,11 @@ function setup(config) {
   return client;
 }
 ```
-````
+```
 
-**Focus** — dim all lines except the ones you want to draw attention to:
+**Focus** — use `focus={n}` to dim every line except the one you want to draw attention to:
 
-````mdx
+```
 ```ts focus={4}
 const client = new MintlifyClient({
   apiKey: process.env.MINTLIFY_KEY,
@@ -98,19 +98,31 @@ const client = new MintlifyClient({
   theme: "dark",   // <-- this line is in focus
 });
 ```
-````
-
-**Wrap** — prevent horizontal scrolling by wrapping long lines:
-
-````mdx
-```bash wrap
-curl -X POST https://api.example.com/v1/documents/generate -H "Authorization: Bearer $TOKEN" -d '{"template":"onboarding","user_id":"u_123"}'
 ```
-````
 
-**Expandable** — collapse a long code block behind a "show more" toggle:
+**Wrap** — add `wrap` to prevent horizontal scrolling by soft-wrapping long lines:
 
-````mdx
+```
+```bash wrap
+curl -X POST https://api.example.com/v1/documents/generate \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"template":"onboarding","user_id":"u_123"}'
+```
+```
+
+**Expandable** — add `expandable` to collapse a long code block behind a "show more" toggle, keeping the page compact until the reader needs the full content:
+
+```
+```json expandable
+{
+  "id": "doc_abc123",
+  "title": "Onboarding Guide",
+  "created_at": "2024-01-15T10:30:00Z",
+  "status": "published"
+}
+```
+```
+
 ```json expandable
 {
   "id": "doc_abc123",
@@ -125,13 +137,12 @@ curl -X POST https://api.example.com/v1/documents/generate -H "Authorization: Be
   }
 }
 ```
-````
 
 ## Diff markers
 
 Highlight added and removed lines within a code block using Shiki's inline comment markers. This is ideal for migration guides and changelog entries that show what changed.
 
-Use `// [!code ++]` to mark a line as added and `// [!code --]` to mark it as removed:
+Use `// [!code ++]` at the end of a line to mark it as added, and `// [!code --]` to mark it as removed:
 
 ```js title="Before and after"
 function connect(options) {
@@ -143,19 +154,7 @@ function connect(options) {
 }
 ```
 
-````mdx
-```js title="Before and after"
-function connect(options) {
-  const client = new Client(options.host); // [!code --]
-  const client = new Client(options.url); // [!code ++]
-  client.authenticate(options.apiKey); // [!code --]
-  client.authenticate(options.token); // [!code ++]
-  return client;
-}
-```
-````
-
-Mintlify renders `--` lines with a red background and `++` lines with a green background, both calibrated for readability in light and dark mode.
+Place the marker comment at the end of the line you want to annotate. Mintlify renders `--` lines with a red background and `++` lines with a green background, both calibrated for readability in light and dark mode. The marker comment itself is hidden in the rendered output.
 
 ## CodeGroup for multiple languages
 
@@ -186,32 +185,7 @@ curl https://api.mintlify.com/v1/pages/quickstart \
 
 </CodeGroup>
 
-````mdx
-<CodeGroup>
-
-```ts title="TypeScript"
-import { MintlifyClient } from "@mintlify/sdk";
-
-const client = new MintlifyClient({ apiKey: process.env.API_KEY });
-const page = await client.pages.get("quickstart");
-console.log(page.title);
-```
-
-```python title="Python"
-from mintlify import MintlifyClient
-
-client = MintlifyClient(api_key=os.environ["API_KEY"])
-page = client.pages.get("quickstart")
-print(page.title)
-```
-
-```bash title="cURL"
-curl https://api.mintlify.com/v1/pages/quickstart \
-  -H "Authorization: Bearer $API_KEY"
-```
-
-</CodeGroup>
-````
+To create a `CodeGroup`, open with a `<CodeGroup>` tag, place your code blocks one after the other (each with a `title` attribute), then close with `</CodeGroup>`. Each code block becomes one selectable tab.
 
 <Note>
   Every code block inside a `<CodeGroup>` must have a `title` attribute. The title becomes the tab label. Blocks without a title will render without a selectable tab.
