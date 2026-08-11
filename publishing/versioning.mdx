@@ -1,0 +1,103 @@
+---
+title: "Version Your Documentation with Mintlify"
+sidebarTitle: "Versioning"
+description: "Maintain multiple versions of your documentation in Mintlify. Configure version tabs so users can switch between v1, v2, and other releases."
+---
+
+When your product has multiple active versions, Mintlify lets you publish and maintain separate documentation for each. Users can switch between versions using a version selector that appears automatically in the navigation, making it easy for them to find the docs that match the version of your product they are running.
+
+## When to use versioning
+
+Versioning adds maintenance overhead — every doc you update in one version must be consciously considered for other versions. Before setting it up, ask whether you actually need it.
+
+<CardGroup cols={2}>
+  <Card title="Use versioning when…" icon="circle-check">
+    - You have **breaking changes** between releases and older versions are still actively used in production.
+    - You need to maintain separate API references, guides, or tutorials for different major versions.
+    - Your users frequently need to consult docs for a version that is not the latest.
+  </Card>
+  <Card title="Skip versioning when…" icon="circle-xmark">
+    - Your changes are **additive or minor** — just update the single docs site and note what's new in a changelog.
+    - You only need to reference legacy behavior occasionally — a single callout or note in the relevant page is enough.
+    - You have the bandwidth to keep only one set of docs current.
+  </Card>
+</CardGroup>
+
+## How versioning works
+
+Each version of your documentation is a **separate Mintlify project** — its own `docs.json`, its own set of MDX pages, and its own deployment. Versions are typically kept in separate branches of the same repository or in entirely separate repositories.
+
+The Mintlify dashboard lets you link multiple projects together under a single domain. When you configure versioning, Mintlify adds a version selector dropdown to the navigation bar of every linked project. Selecting a version navigates the user to the corresponding project's site while preserving their position in the hierarchy where possible.
+
+<Note>
+  Each version is a fully independent docs site. Updating, deploying, or rolling back one version has no effect on any other version.
+</Note>
+
+## Setting up versions
+
+<Steps>
+  <Step title="Create a Mintlify project for each version">
+    Each version needs its own Mintlify project. You can organize versions using **separate branches** in the same repository (e.g., `docs-v1`, `docs-v2`) or **separate repositories** entirely. Connect each project to its branch or repo through **Settings → GitHub Integration** in the respective project's dashboard.
+  </Step>
+  <Step title="Open the Versioning settings">
+    In the Mintlify dashboard, select the project you want to treat as the primary (usually the latest version). Navigate to **Settings → Versioning**.
+  </Step>
+  <Step title="Add each version">
+    Click **Add version** and fill in the details for each linked project:
+    - **Label** — the display name shown in the version selector (e.g., `v2 (latest)`, `v1`).
+    - **Project** — select the corresponding Mintlify project from the dropdown.
+
+    Repeat this step for every version you want to include.
+  </Step>
+  <Step title="Set the default version">
+    Mark one version as the **default**. This is the version users land on when they visit your docs root URL without specifying a version. In most cases, this should be your latest stable release.
+  </Step>
+  <Step title="Save and verify">
+    Click **Save**. Reload your documentation site — a version dropdown will now appear in the navigation bar. Click through each version to confirm that the selector navigates to the correct project.
+  </Step>
+</Steps>
+
+## Version labels
+
+Consistent, predictable labels help users immediately understand which version they are reading. Follow these guidelines when naming your versions:
+
+<Accordion title="Semantic versioning (recommended)">
+  Use major version numbers aligned with your product's release cadence. For example:
+
+  | Label | When to use |
+  | --- | --- |
+  | `v3 (latest)` | The current stable release |
+  | `v2` | The previous major version |
+  | `v1` | A legacy version still in use |
+
+  Appending `(latest)` to the current version removes any ambiguity about which version users should default to.
+</Accordion>
+
+<Accordion title="Date-based labels">
+  If your product ships on a calendar cadence rather than semantic releases, date-based labels can be clearer:
+
+  | Label | When to use |
+  | --- | --- |
+  | `2024 (latest)` | The current year's release |
+  | `2023` | The previous year's release |
+
+  Avoid overly specific dates (e.g., `March 2024`) — they age poorly and create confusion about when a version was superseded.
+</Accordion>
+
+<Accordion title="Names to avoid">
+  - **"New" or "Old"** — these are relative and become meaningless as soon as you release again.
+  - **Full patch versions (v2.3.1)** — minor and patch versions rarely warrant separate doc sites; keep versioning at the major level.
+  - **Codenames without numbers** — fun internally, but users outside your team may not know what "Horizon" or "Aurora" means chronologically.
+</Accordion>
+
+## Archiving deprecated versions
+
+When a version reaches end-of-life, you don't have to take it offline. Marking it as deprecated keeps the content accessible for users who haven't yet upgraded while making it clear that the version is no longer maintained.
+
+<Tip>
+  In **Settings → Versioning**, select the version you want to archive and toggle **Mark as deprecated**. Mintlify will display a banner at the top of every page in that version letting readers know it is no longer maintained and pointing them toward the current version.
+</Tip>
+
+<Warning>
+  Deleting a Mintlify project permanently removes its deployment and all associated settings. If you want to retire a version but preserve its content, archive it with the deprecated flag rather than deleting the project.
+</Warning>

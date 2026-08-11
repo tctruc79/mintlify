@@ -1,0 +1,139 @@
+---
+title: "Adding Images and Media to Your Docs"
+sidebarTitle: "Images & Media"
+description: "Embed images, videos, and iframes in your Mintlify docs. Learn about supported formats, alt text, sizing, and hosting best practices."
+---
+
+Mintlify supports standard Markdown image syntax and several MDX media components for embedding rich content. You can host images directly in your docs repository, use an external CDN, or point to any publicly accessible URL. Videos and interactive embeds are supported through a lightweight `<iframe>` wrapper that handles responsive sizing automatically.
+
+<Tip>
+  Always write descriptive alt text for every image. Alt text improves accessibility for screen reader users and gives search engines context about your visual content.
+</Tip>
+
+## Images
+
+The simplest way to add an image is standard Markdown syntax:
+
+```mdx
+![A diagram showing the Mintlify build pipeline](/images/build-pipeline.png)
+```
+
+For images that need additional attributes — such as explicit dimensions or a CSS class — use the MDX `<img>` tag:
+
+```mdx
+<img
+  src="/images/dashboard-overview.png"
+  alt="The Mintlify dashboard showing project analytics"
+  width="800"
+  height="450"
+/>
+```
+
+You can also reference an external URL directly in either syntax:
+
+```mdx
+![Mintlify logo](https://mintlify.com/logo/dark.png)
+
+<img
+  src="https://mintlify.com/images/hero.png"
+  alt="Mintlify docs platform hero image"
+/>
+```
+
+<Note>
+  Store images in your docs repository — an `images/` folder at the root is the conventional location — and reference them with a repo-relative path beginning with `/`, such as `/images/screenshot.png`. This keeps your assets version-controlled alongside your content and ensures they deploy atomically with each docs update.
+</Note>
+
+## Image sizing
+
+By default, images render at their intrinsic size up to the full width of the content column. Use the `width` prop on `<img>` to constrain an image to a specific pixel width — useful for screenshots that would otherwise appear oversized, or icons that should render small inline.
+
+```mdx
+{/* Full-width screenshot — no width needed */}
+<img
+  src="/images/full-dashboard.png"
+  alt="Full dashboard screenshot"
+/>
+
+{/* Constrained to 400px — good for focused UI callouts */}
+<img
+  src="/images/modal-detail.png"
+  alt="The confirmation modal with two action buttons"
+  width="400"
+/>
+
+{/* Small icon-sized image */}
+<img
+  src="/images/status-badge.png"
+  alt="Green status badge indicating a passing build"
+  width="120"
+/>
+```
+
+Avoid setting both `width` and `height` explicitly unless you need a fixed aspect ratio — letting the browser calculate height from the width preserves the image's natural proportions.
+
+## Videos
+
+Embed videos from YouTube, Loom, or any other iframe-compatible source using Mintlify's `<iframe>` wrapper. The wrapper ensures the embed is responsive and respects your docs theme.
+
+**YouTube:**
+
+```mdx
+<iframe
+  width="700"
+  height="394"
+  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+  title="Getting started with Mintlify"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+/>
+```
+
+**Loom:**
+
+```mdx
+<iframe
+  width="700"
+  height="394"
+  src="https://www.loom.com/embed/abc123def456"
+  title="Mintlify walkthrough — setting up your first project"
+  frameborder="0"
+  allowfullscreen
+/>
+```
+
+Use the `width` and `height` attributes to set the embed dimensions. A 16:9 aspect ratio (e.g., `700` × `394`) works well for most docs column widths.
+
+<Note>
+  Always include a `title` attribute on your `<iframe>` elements. Screen readers use the title to describe the embed to users who cannot see the video.
+</Note>
+
+## Captions
+
+Add a `<Caption>` component directly below an image or embed to display a short descriptive caption. Captions are styled in a smaller, muted typeface to visually separate them from body text.
+
+```mdx
+<img
+  src="/images/architecture-diagram.png"
+  alt="High-level architecture diagram showing the three service layers"
+  width="720"
+/>
+<Caption>
+  Figure 1 — The three-layer architecture: edge CDN, application server, and
+  managed database.
+</Caption>
+```
+
+You can use `<Caption>` below any media element — images, videos, or code blocks — wherever a short label adds useful context.
+
+```mdx
+<iframe
+  width="700"
+  height="394"
+  src="https://www.youtube.com/embed/example"
+  title="Two-minute overview of the Mintlify editor"
+  allowfullscreen
+/>
+<Caption>A two-minute overview of the Mintlify web editor.</Caption>
+```

@@ -1,0 +1,154 @@
+---
+title: "Customize Colors, Fonts, and Logo in Mintlify"
+sidebarTitle: "Branding"
+description: "Apply your brand to Mintlify docs by configuring primary colors, logo images, favicon, and typography. All changes take effect on your next deploy."
+---
+
+Mintlify supports full brand customization through `docs.json`. Set your colors, upload your logo, choose a font pairing, and select a theme — all without writing a line of CSS. Every change you make to `docs.json` takes effect the next time you push to your connected repository.
+
+<Tip>
+  Add `"$schema": "https://mintlify.com/docs.json"` to your `docs.json` to unlock IntelliSense autocompletion for all color, font, and theme fields in VS Code and other JSON Schema-aware editors.
+</Tip>
+
+## Colors
+
+The `colors` object lets you apply your brand's primary color to interactive elements, links, sidebar highlights, and buttons. Mintlify uses three color variants so the UI looks great in both light and dark mode.
+
+<ParamField path="colors.primary" type="string" required>
+  The base brand color. Used as the fallback when a light- or dark-specific value is not provided.
+</ParamField>
+
+<ParamField path="colors.light" type="string">
+  The color used for interactive elements when the site is displayed in **dark mode**. Choose a lighter tint of your brand color so it remains legible against dark backgrounds.
+</ParamField>
+
+<ParamField path="colors.dark" type="string">
+  The color used for interactive elements when the site is displayed in **light mode**. Choose a darker shade of your brand color so it remains legible against light backgrounds.
+</ParamField>
+
+```json
+"colors": {
+  "primary": "#6366f1",
+  "light": "#a5b4fc",
+  "dark": "#4338ca"
+}
+```
+
+<Note>
+  All color values must be valid CSS hex codes (e.g., `#6366f1`). Three-character shorthand (`#fff`) is also accepted.
+</Note>
+
+## Logo
+
+The `logo` object controls the image shown in the top-left corner of your docs site. You can provide separate images for light and dark mode so your logo always looks its best regardless of the user's system preference.
+
+<ParamField path="logo.light" type="string">
+  Path or URL to the logo displayed in **light mode**. Use a version of your logo optimized for light backgrounds (typically a dark or colored wordmark).
+</ParamField>
+
+<ParamField path="logo.dark" type="string">
+  Path or URL to the logo displayed in **dark mode**. Use a version of your logo optimized for dark backgrounds (typically a white or light wordmark).
+</ParamField>
+
+```json
+"logo": {
+  "light": "/logo/light.svg",
+  "dark": "/logo/dark.svg"
+}
+```
+
+Place your logo files in a `logo/` directory at the root of your docs repository and reference them with a leading slash. You can also pass an external URL if your logos are hosted on a CDN.
+
+<Tip>
+  SVG format is strongly recommended for logos. SVGs are resolution-independent, so your logo stays crisp on high-DPI (Retina) displays without requiring separate `@2x` assets.
+</Tip>
+
+## Favicon
+
+The `favicon` field points to the small icon displayed in browser tabs and bookmarks. It accepts a local path or an external URL.
+
+<ParamField path="favicon" type="string">
+  Path or URL to your site's favicon. Recommended formats: `.svg` or `.png`. Recommended dimensions: 32×32 or 64×64 pixels.
+</ParamField>
+
+```json
+"favicon": "/favicon.svg"
+```
+
+For the best results across browsers and devices, use a square SVG. If you need broad compatibility with older browsers, a 32×32 PNG works reliably. Avoid `.ico` files larger than 64×64 — oversized favicons can cause display issues on some platforms.
+
+## Fonts
+
+The `font` object lets you choose custom typefaces for headings and body text. You can reference any Google Font by name, or provide a custom font via URL.
+
+<ParamField path="font.headings.family" type="string">
+  The font family name for headings (H1–H6). Accepts any Google Fonts family name or a custom font name paired with a `src` URL.
+</ParamField>
+
+<ParamField path="font.body.family" type="string">
+  The font family name for body text and prose. Accepts any Google Fonts family name or a custom font name paired with a `src` URL.
+</ParamField>
+
+**Example — Google Fonts:**
+
+```json
+"font": {
+  "headings": {
+    "family": "Inter"
+  },
+  "body": {
+    "family": "Inter"
+  }
+}
+```
+
+**Example — Custom self-hosted fonts:**
+
+```json
+"font": {
+  "headings": {
+    "family": "Geist",
+    "src": "https://fonts.yourcompany.com/geist.woff2"
+  },
+  "body": {
+    "family": "Geist",
+    "src": "https://fonts.yourcompany.com/geist.woff2"
+  }
+}
+```
+
+## Theme
+
+The `theme` field selects the overall layout and visual personality of your site. A theme controls element shapes, spacing, sidebar behavior, and typographic defaults. Your `colors` and `font` settings are layered on top of whichever theme you choose.
+
+<ParamField path="theme" type="string">
+  One of Mintlify's built-in theme names. Defaults to `luma`.
+</ParamField>
+
+<CardGroup cols={2}>
+  <Card title="luma" icon="sparkles">
+    **Sleek, minimal.** The default theme. Great for developer-focused products that want a clean, distraction-free reading experience.
+  </Card>
+  <Card title="willow" icon="leaf">
+    **Elegant.** Refined typography and subtle details. A natural fit for design-focused products and creative tools.
+  </Card>
+  <Card title="palm" icon="sun">
+    **Spacious, airy.** Generous whitespace and relaxed line heights. Ideal for long-form, narrative documentation.
+  </Card>
+  <Card title="almond" icon="circle">
+    **Soft, approachable.** Rounded corners and warm neutrals make this the right pick for consumer-facing or onboarding-heavy docs.
+  </Card>
+  <Card title="aspen" icon="bolt">
+    **Bold, technical.** High-contrast layout that projects confidence. Works well for infrastructure, DevOps, and platform engineering products.
+  </Card>
+  <Card title="maple" icon="book-open">
+    **Warm, sidebar-focused.** The sidebar is the star here — best suited to large documentation sets with deep, multi-level navigation trees.
+  </Card>
+  <Card title="sequoia" icon="table">
+    **Dense, information-rich.** A compact layout that maximizes content density. The go-to choice for API-heavy products with extensive reference material.
+  </Card>
+</CardGroup>
+
+```json
+"theme": "maple"
+```

@@ -1,0 +1,140 @@
+---
+title: "Mintlify Webhooks — Real-time Deployment Events"
+sidebarTitle: "Webhooks"
+description: "Receive real-time webhook events when your Mintlify docs site deploys, fails, or changes. Configure webhook endpoints in the dashboard to automate notifications."
+---
+
+Mintlify sends webhook events to your configured endpoint whenever significant events occur in your docs site — such as successful deployments, build failures, or page updates. Use webhooks to trigger notifications, sync external systems, or automate workflows without polling the API. Your endpoint receives an HTTP `POST` request with a JSON payload describing the event.
+
+## Supported Events
+
+Mintlify currently emits the following webhook events:
+
+| Event | Description |
+|---|---|
+| `deployment.started` | Triggered when a new build begins. Use this to notify your team that a deployment is in progress. |
+| `deployment.success` | Triggered when a deployment completes successfully and your docs are live. |
+| `deployment.failed` | Triggered when a build fails. The payload includes error details to help with debugging. |
+
+## Configure a Webhook
+
+You register webhook endpoints from the Mintlify dashboard. Each endpoint can subscribe to one or more event types.
+
+<Steps>
+  <Step title="Open webhook settings">
+    Go to **Settings → Webhooks** in the Mintlify dashboard.
+  </Step>
+  <Step title="Add a new webhook">
+    Click **Add Webhook** to open the configuration panel.
+  </Step>
+  <Step title="Enter your endpoint URL">
+    Provide the URL of the server that will receive events. The URL must use
+    **HTTPS** — plain HTTP endpoints are not accepted.
+  </Step>
+  <Step title="Select events">
+    Choose the event types you want to subscribe to. You can select individual
+    events or subscribe to all events at once.
+  </Step>
+  <Step title="Save and verify">
+    Click **Save**. Mintlify immediately sends a test event to your endpoint to
+    confirm it is reachable and returning a `2xx` response.
+  </Step>
+</Steps>
+
+## Webhook Payload
+
+Every webhook request includes a JSON body describing the event, the timestamp it occurred, and relevant data about the affected resource. Below is an example `deployment.success` payload:
+
+```json
+{
+  "event": "deployment.success",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "deploymentId": "dep_xxx",
+    "projectId": "proj_xxx",
+    "url": "https://docs.yourcompany.com",
+    "commit": "abc123"
+  }
+}
+```
+
+For `deployment.failed` events, the `data` object also includes an `error` field with a description of what went wrong:
+
+```json
+{
+  "event": "deployment.failed",
+  "timestamp": "2024-01-15T11:00:00Z",
+  "data": {
+    "deploymentId": "dep_yyy",
+    "projectId": "proj_xxx",
+    "url": "https://docs.yourcompany.com",
+    "commit": "def456",
+    "error": "Build failed: unresolvable component reference in getting-started/quickstart.mdx"
+  }
+}
+```
+
+## Verifying Webhook Signatures
+
+Mintlify signs every outgoing webhook request with HMAC-SHA256 using the secret generated when you create the endpoint. The signature is included in the `X-Mintlify-Signature` request header. Always verify this signature before processing an event to ensure the request genuinely came from Mintlify.
+
+You can find your webhook secret on the webhook detail page in **Settings → Webhooks**.
+
+```javascript verify-webhook.js
+const crypto = require('crypto');
+
+function verifyWebhook(payload, signature, secret) {
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(payload)
+    .digest('hex');
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected)
+  );
+}
+```
+
+Call this function with the raw request body (as a string or Buffer), the value of the `X-Mintlify-Signature` header, and your webhook secret:
+
+```javascript
+app.post('/webhook', (req, res) => {
+  const signature = req.headers['x-mintlify-signature'];
+  const isValid = verifyWebhook(req.rawBody, signature, process.env.WEBHOOK_SECRET);
+
+  if (!isValid) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  // Safe to process the event
+  const event = req.body;
+  console.log('Received event:', event.event);
+  res.sendStatus(200);
+});
+```
+
+<Warning>
+  Always verify webhook signatures before processing events. Ignore and return
+  a `401` response for any request with a missing or invalid signature to
+  protect your system from spoofed payloads.
+</Warning>
+
+## Retry Policy
+
+If your endpoint does not return a `2xx` HTTP status code within 10 seconds, Mintlify treats the delivery as failed and retries automatically. Deliveries are retried up to **5 times** using exponential backoff:
+
+| Attempt | Delay |
+|---|---|
+| 1st retry | 30 seconds |
+| 2nd retry | 2 minutes |
+| 3rd retry | 10 minutes |
+| 4th retry | 30 minutes |
+| 5th retry | 2 hours |
+
+Return a `200 OK` response as quickly as possible to acknowledge receipt — ideally before you do any processing. If your handler takes a long time to run, queue the event for background processing and respond immediately.
+
+<Note>
+  After 5 failed delivery attempts, Mintlify stops retrying and marks the
+  delivery as permanently failed. You can view and manually replay failed
+  deliveries from **Settings → Webhooks** in the dashboard.
+</Note>

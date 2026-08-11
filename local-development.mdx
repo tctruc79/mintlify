@@ -1,0 +1,101 @@
+---
+title: "Preview Docs Locally with the Mintlify CLI"
+sidebarTitle: "Local Preview"
+description: "Install the Mintlify CLI to preview your documentation site locally before publishing. Supports hot reload and live validation."
+---
+
+Pushing changes to see how they look in production is a slow feedback loop. The Mintlify CLI solves this by running a full preview of your docs site on your local machine — complete with hot reload, component rendering, and navigation validation. Any time you save a file, the browser updates instantly so you can iterate quickly and catch mistakes before they ever go live.
+
+## Prerequisites
+
+- **Node.js 18 or later** — The Mintlify CLI is a Node.js package. Run `node --version` to check your current version. If you need to upgrade, download the latest LTS release from [nodejs.org](https://nodejs.org).
+
+## Install the CLI
+
+Install the `mint` CLI globally so you can run it from any directory.
+
+<CodeGroup>
+  ```bash npm
+  npm install -g mint
+  ```
+  ```bash yarn
+  yarn global add mint
+  ```
+  ```bash pnpm
+  pnpm add -g mint
+  ```
+</CodeGroup>
+
+Verify the installation by running:
+
+```bash
+mint --version
+```
+
+## Start the local preview
+
+<Steps>
+  <Step title="Install the CLI">
+    If you haven't already, install the Mintlify CLI globally using the command above for your preferred package manager.
+  </Step>
+  <Step title="Navigate to your docs folder">
+    Change into the directory that contains your `docs.json` file. This is the root of your Mintlify docs project — the CLI looks for `docs.json` in the current working directory.
+
+    ```bash
+    cd your-docs-repo
+    ```
+  </Step>
+  <Step title="Run mint dev">
+    Start the local development server with the `dev` command.
+
+    ```bash
+    mint dev
+    ```
+
+    The CLI will install any required dependencies on first run, then build your site and print a local URL to the terminal.
+  </Step>
+  <Step title="Open the preview in your browser">
+    Navigate to [http://localhost:3000](http://localhost:3000) to see your docs site. The preview reflects your current `docs.json` configuration, all your MDX pages, and every component exactly as they will appear when published.
+
+    From here, edit any MDX file or `docs.json` and save — the browser will reload automatically with your changes.
+  </Step>
+</Steps>
+
+<Note>
+  Changes you make locally are only visible to you until you push them to your connected Git branch. The local preview server never publishes anything. When you're happy with your changes, commit and push as normal to trigger a production deployment.
+</Note>
+
+## Updating the CLI
+
+Mintlify releases regular updates to the CLI with bug fixes, new component support, and performance improvements. Keep your local version in sync by running:
+
+```bash
+mint update
+```
+
+Run this command from your docs folder periodically, or any time the CLI prompts you that a newer version is available.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Dev server won't start">
+    If `mint dev` fails to start, try the following steps in order:
+
+    1. Run `mint update` to make sure you have the latest version of the CLI.
+    2. Confirm you're running Node.js 18 or later with `node --version`. If your version is older, upgrade from [nodejs.org](https://nodejs.org) and try again.
+    3. Ensure you're running `mint dev` from the directory that contains your `docs.json` file, not a parent or subdirectory.
+    4. Delete the `.mint` cache folder if it exists, then run `mint dev` again to force a clean build.
+  </Accordion>
+  <Accordion title="Page shows 404">
+    If you navigate to a page in the browser and see a 404 error, the page's path is most likely missing from the `navigation` section of your `docs.json`.
+
+    Open `docs.json` and confirm the page file path is listed under a navigation group. The path should be relative to the docs root and should omit the `.mdx` extension — for example, a file at `guides/authentication.mdx` should appear as `"guides/authentication"` in the navigation array.
+  </Accordion>
+  <Accordion title="Changes not reflecting in the browser">
+    The local preview server uses hot reload, so changes should appear in the browser automatically every time you save a file. If updates aren't showing up, check the following:
+
+    - **Make sure you saved the file.** Hot reload only triggers after the file is written to disk.
+    - **Check the terminal for errors.** If your MDX contains a syntax error, the CLI will log it and skip the reload until the error is resolved.
+    - **Restart the server.** Stop `mint dev` with `Ctrl + C` and run it again. This is occasionally needed after large structural changes to `docs.json`.
+  </Accordion>
+</AccordionGroup>

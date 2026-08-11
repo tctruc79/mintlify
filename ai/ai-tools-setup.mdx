@@ -1,0 +1,49 @@
+---
+title: "Set Up AI Coding Tools to Write Mintlify Docs"
+sidebarTitle: "AI Tools Setup"
+description: "Configure Claude Code, Cursor, Windsurf, and other AI coding tools with Mintlify's documentation skill for smarter, context-aware doc generation."
+---
+
+Mintlify provides a documentation skill for AI coding tools. Once installed, tools like Claude Code, Cursor, and Windsurf understand Mintlify components, MDX syntax, and writing conventions — so they generate better docs out of the box, without you having to explain the format every time.
+
+## Install the Mintlify skill
+
+Run the following command inside your docs project to install the Mintlify documentation skill for your configured AI tools:
+
+```bash
+npx skills add https://mintlify.com/docs
+```
+
+This command installs the Mintlify documentation skill for every supported AI tool it detects in your project. The skill includes component reference, writing standards, and workflow guidance — everything your AI tool needs to produce well-structured Mintlify docs from the start.
+
+<Tip>
+  Re-run `npx skills add https://mintlify.com/docs` whenever Mintlify releases new components to keep the skill up to date and ensure your AI tools know about the latest additions.
+</Tip>
+
+## Supported tools
+
+The Mintlify skill works with all major AI coding assistants. Here's how it configures each one:
+
+<AccordionGroup>
+  <Accordion title="Claude Code">
+    The skill registers with Claude's CLI skill system. Once added, Claude Code uses Mintlify component knowledge and writing conventions when you ask it to write or edit documentation files.
+  </Accordion>
+  <Accordion title="Cursor">
+    The skill automatically writes a Cursor rules file to your project. Cursor picks up these rules for every AI interaction inside your docs directory.
+  </Accordion>
+  <Accordion title="Windsurf">
+    The skill automatically writes Windsurf rules to your project. Windsurf applies them whenever you work on `.mdx` files in your docs repo.
+  </Accordion>
+  <Accordion title="VS Code Copilot">
+    The skill installs as a workspace rule for GitHub Copilot. The rule file is scoped to your docs project so it doesn't affect other workspaces.
+  </Accordion>
+</AccordionGroup>
+
+## What the skill teaches your AI tool
+
+After installation, your AI coding tool gains working knowledge of the full Mintlify documentation system:
+
+- **All Mintlify MDX components and their props** — `<Card>`, `<CardGroup>`, `<Steps>`, `<Accordion>`, `<CodeGroup>`, `<Note>`, `<Tip>`, `<Warning>`, and more
+- **Frontmatter fields** — `title`, `sidebarTitle`, `description`, and other supported metadata keys
+- **Writing style conventions** — second person, active voice, imperative mood, and Mintlify's structural patterns
+- **`docs.json` configuration schema** — navigation structure, theming options, and feature flags so your AI can help configure your site, not just write content

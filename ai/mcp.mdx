@@ -1,0 +1,55 @@
+---
+title: "Connect Mintlify Docs to AI via MCP"
+sidebarTitle: "MCP"
+description: "Use Model Context Protocol (MCP) to make your Mintlify documentation available as context for AI assistants. Enable smarter, more accurate AI responses about your product."
+---
+
+Model Context Protocol (MCP) lets AI assistants like Claude connect directly to your Mintlify docs as a live data source. When MCP is enabled, your AI tools can answer questions about your product using your actual documentation — not outdated training data — so readers get accurate, up-to-date answers every time.
+
+## How MCP works with Mintlify
+
+MCP exposes your published docs as a structured context feed. AI tools that support MCP can query your docs site in real time when answering questions, rather than relying on knowledge baked in during model training.
+
+When a reader triggers the MCP option from your docs page, their AI tool establishes a connection to your site and retrieves the relevant content. Every answer the AI gives is grounded in what you've actually published, which means fewer hallucinations and more useful responses for your users.
+
+## Enable MCP for your docs site
+
+<Steps>
+  <Step title="Add MCP to your contextual options">
+    Open your `docs.json` file and add `"mcp"` to the `contextual.options` array:
+
+    ```json
+    "contextual": {
+      "options": ["mcp", "claude", "chatgpt"]
+    }
+    ```
+
+    You can combine `"mcp"` with any other contextual options — they all appear together in the same menu.
+  </Step>
+  <Step title="Readers see the MCP option">
+    Once you publish the change, readers of your docs will see an **MCP** entry in the contextual menu on every page. They can click it to connect their AI tool to your docs as a live context source.
+  </Step>
+  <Step title="Their AI tool connects to your docs">
+    When a reader clicks the MCP option, their AI tool receives a connection to your docs site. From that point on, the AI can query your documentation in real time to answer their questions.
+  </Step>
+</Steps>
+
+## Using your docs in Claude
+
+Claude Desktop and Claude.ai both support MCP connections. When a reader opens the MCP panel from your docs page, they see a prompt to connect your docs to their Claude session. Once connected, they can ask Claude questions in natural language and Claude will reference your live documentation to answer accurately.
+
+To use it yourself while testing, open any page on your published docs site, click the MCP option in the contextual menu, and follow the prompts to authorize the connection in Claude.
+
+## Using your docs in Cursor or VS Code
+
+Developer-focused AI assistants like Cursor and VS Code Copilot also support MCP. When a developer connects your docs via the MCP option, their in-editor AI assistant can answer questions about your APIs, components, and configuration using your published content — right alongside their code.
+
+This is especially useful for teams building on top of your product: developers can ask their editor's AI assistant about your SDK, reference your latest docs, and get accurate answers without switching context.
+
+<Note>
+  MCP is a read-only integration. AI tools can read your docs to answer questions, but they cannot modify, delete, or write back to your documentation.
+</Note>
+
+<Tip>
+  Keep your docs up to date — MCP users get answers based on whatever is currently published. Stale or incomplete pages will produce incomplete AI answers, so treat your published docs as the source of truth.
+</Tip>

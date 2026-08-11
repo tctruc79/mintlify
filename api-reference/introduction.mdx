@@ -1,0 +1,75 @@
+---
+title: "Mintlify Platform API Reference"
+sidebarTitle: "Overview"
+description: "The Mintlify API lets you programmatically manage your docs site, trigger deployments, manage pages, and receive webhook events for automation."
+---
+
+The Mintlify platform API gives you programmatic access to your documentation site. Use it to trigger deployments, query page metadata, manage content, and integrate Mintlify into your existing tooling — whether that's a CI/CD pipeline, a content management system, or a custom internal dashboard.
+
+## Base URL
+
+All API requests are made to the following base URL:
+
+```
+https://api.mintlify.com/v1
+```
+
+## Authentication
+
+Every request to the Mintlify API must include a valid API key in the `Authorization` header. Keys are generated from your Mintlify dashboard and scoped to a specific project or organization. See the [Authentication](/api-reference/authentication) page for full details on generating and using API keys.
+
+## Request Format
+
+The Mintlify API accepts JSON request bodies for `POST` and `PATCH` requests. Use query parameters for filtering and pagination on `GET` requests. Always include the `Content-Type: application/json` header when sending a request body.
+
+```bash
+curl https://api.mintlify.com/v1/pages \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+## Response Format
+
+All API responses return JSON. Successful responses wrap your data in a `data` field alongside a `success` flag. Error responses include a machine-readable `code` and a human-readable `message` to help you diagnose the problem.
+
+```json
+// Success
+{
+  "success": true,
+  "data": { ... }
+}
+```
+
+```json
+// Error
+{
+  "success": false,
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "The requested resource was not found."
+  }
+}
+```
+
+## Rate Limits
+
+API requests are rate-limited to **100 requests per minute** per API key. If you exceed this limit, the API returns a `429 Too Many Requests` response. Check the `X-RateLimit-Remaining` header on any response to see how many requests you have left in the current window.
+
+<Note>
+  If you need a higher rate limit for a specific integration, contact Mintlify
+  support to discuss your use case.
+</Note>
+
+## Available Resources
+
+<CardGroup cols={3}>
+  <Card title="Pages" icon="file-lines" href="/api-reference/pages">
+    List and retrieve metadata for pages in your docs site.
+  </Card>
+  <Card title="Deployments" icon="rocket" href="/api-reference/deployments">
+    Trigger and monitor deployments from your CI/CD pipeline.
+  </Card>
+  <Card title="Webhooks" icon="webhook" href="/api-reference/webhooks">
+    Receive real-time events for deployments and page changes.
+  </Card>
+</CardGroup>

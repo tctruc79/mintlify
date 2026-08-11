@@ -1,0 +1,206 @@
+---
+title: "Mintlify MDX Components for Rich Documentation"
+sidebarTitle: "Components"
+description: "Enrich your docs with Cards, Steps, Tabs, Accordions, callouts, and more. Mintlify components are drop-in MDX blocks that handle layout and theming automatically."
+---
+
+Mintlify provides a library of MDX components for creating rich, structured documentation without writing any HTML or CSS. You import nothing — every component listed here is available globally in any `.mdx` file. Drop them into your content alongside regular Markdown and Mintlify handles layout, spacing, and theming automatically for both light and dark mode.
+
+<Tip>
+  All components handle dark/light mode automatically. Never add custom styles, inline colors, or wrapper `div` elements to adjust their appearance — doing so breaks theme consistency.
+</Tip>
+
+## Callouts
+
+Callouts draw the reader's attention to important information. Mintlify ships four variants, each with a distinct icon and color: `<Note>`, `<Tip>`, `<Warning>`, and `<Info>`.
+
+<Note>
+  Use `Note` for neutral supplementary information that's helpful but not critical.
+</Note>
+
+<Tip>
+  Use `Tip` for best practices, shortcuts, or recommendations that improve the experience.
+</Tip>
+
+<Warning>
+  Use `Warning` when the reader could break something or lose data if they proceed incorrectly.
+</Warning>
+
+<Info>
+  Use `Info` for contextual background that helps the reader understand *why*, not just *how*.
+</Info>
+
+To add a callout, wrap your text in the appropriate component tag:
+
+```
+<Note>Your note text here.</Note>
+<Tip>Your tip text here.</Tip>
+<Warning>Your warning text here.</Warning>
+<Info>Your info text here.</Info>
+```
+
+## Cards
+
+Cards are linked tiles that work well for navigation sections, feature overviews, and resource indexes. Use a `CardGroup` to arrange multiple cards side by side.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get up and running in five minutes with a minimal working example.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+    Explore the full REST API with interactive request examples.
+  </Card>
+  <Card title="AI Writing" icon="wand-magic-sparkles" href="/ai/ai-writing">
+    Write better docs faster with built-in AI assistance.
+  </Card>
+  <Card title="Configuration" icon="gear" href="/configuration/settings">
+    Control your site name, branding, and navigation in docs.json.
+  </Card>
+</CardGroup>
+
+The `cols` prop on `CardGroup` accepts `1`, `2`, `3`, or `4`. The `icon` prop accepts any Font Awesome icon slug. The `href` prop makes the entire card a clickable link.
+
+```
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Description text here.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+    Description text here.
+  </Card>
+</CardGroup>
+```
+
+## Steps
+
+Use `Steps` to document sequential processes — installation flows, tutorials, and multi-stage configurations. Each `Step` takes a `title` prop and renders its children as the step body.
+
+<Steps>
+  <Step title="Install the CLI">
+    Run the following command to install the Mintlify CLI globally:
+
+    ```bash
+    npm install -g mint
+    ```
+  </Step>
+  <Step title="Start the local preview">
+    Navigate to your docs folder and start the development server:
+
+    ```bash
+    mint dev
+    ```
+  </Step>
+  <Step title="Open the preview">
+    Visit `http://localhost:3000` in your browser to see your docs rendered live.
+  </Step>
+</Steps>
+
+```
+<Steps>
+  <Step title="First step title">
+    Step body content goes here. Supports Markdown and nested components.
+  </Step>
+  <Step title="Second step title">
+    Another step body.
+  </Step>
+</Steps>
+```
+
+## Tabs
+
+Tabs let you present parallel content — such as instructions for multiple frameworks or languages — without cluttering the page. Each `Tab` takes a `title` prop that becomes the tab label.
+
+<Tabs>
+  <Tab title="npm">
+    Install with npm:
+    ```bash
+    npm install -g mint
+    ```
+  </Tab>
+  <Tab title="yarn">
+    Install with yarn:
+    ```bash
+    yarn global add mint
+    ```
+  </Tab>
+  <Tab title="pnpm">
+    Install with pnpm:
+    ```bash
+    pnpm add -g mint
+    ```
+  </Tab>
+</Tabs>
+
+```
+<Tabs>
+  <Tab title="Tab One">
+    Content for the first tab.
+  </Tab>
+  <Tab title="Tab Two">
+    Content for the second tab.
+  </Tab>
+</Tabs>
+```
+
+## Accordion
+
+Accordions collapse secondary content behind a clickable heading, keeping pages scannable while still providing detail on demand. Use them for FAQs, optional configuration details, and explanations that most readers can skip.
+
+<AccordionGroup>
+  <Accordion title="What happens if I exceed my plan's page limit?">
+    Your existing pages remain accessible, but you won't be able to publish new pages until you upgrade your plan or remove pages to stay within the limit. You'll receive an email notification before you hit the cap.
+  </Accordion>
+  <Accordion title="Can I use a custom domain?">
+    Yes. Custom domains are available on all paid plans. Add a `CNAME` record pointing to the value from your dashboard and enter your domain in your project settings. See [Custom Domain](/configuration/custom-domain) for full instructions.
+  </Accordion>
+</AccordionGroup>
+
+```
+<Accordion title="Your question here?">
+  Your answer content here. Supports Markdown.
+</Accordion>
+```
+
+Use `<AccordionGroup>` to wrap multiple accordions so they render as a connected group.
+
+## ParamField
+
+Use `ParamField` to document API request parameters. It renders a structured field entry with the parameter name, type, whether it's required, and a description.
+
+```
+<ParamField path="user_id" type="string" required>
+  The unique identifier of the user. Returned by the /users endpoint.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="20">
+  The maximum number of records to return per page. Accepts values between 1 and 100.
+</ParamField>
+
+<ParamField body="email" type="string" required>
+  The user's email address. Must be a valid RFC 5321 address.
+</ParamField>
+```
+
+The first prop (`path`, `query`, or `body`) indicates where the parameter lives in the request. Additional props include `type`, `required`, and `default`.
+
+## ResponseField
+
+Use `ResponseField` to document API response payloads. It follows the same pattern as `ParamField` but signals to readers that the field comes from the server, not the request.
+
+```
+<ResponseField name="id" type="string">
+  The unique identifier for the newly created resource.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  ISO 8601 timestamp indicating when the resource was created.
+</ResponseField>
+
+<ResponseField name="status" type="enum<string>">
+  The current state of the resource. One of active, pending, or archived.
+</ResponseField>
+```
+
+<Note>
+  You can nest `ResponseField` components inside an `Expandable` component to document nested objects and arrays in a response body.
+</Note>

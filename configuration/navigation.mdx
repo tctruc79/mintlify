@@ -1,0 +1,162 @@
+---
+title: "Configure Navigation: Tabs, Groups, and Pages"
+sidebarTitle: "Navigation"
+description: "Structure your Mintlify sidebar with tabs, groups, and page entries. Learn how to organize content and create multi-section documentation sites."
+---
+
+The `navigation` object in `docs.json` controls your sidebar structure. You can organize pages into groups, and groups into tabs for multi-section sites. Every page in your docs must appear somewhere in this tree — Mintlify uses it to build the sidebar and determine the reading order for previous/next navigation.
+
+## Groups
+
+Groups are the fundamental building block of Mintlify navigation. Each group has a display label and a list of page paths. Page paths map directly to `.mdx` files in your repository — you omit the file extension when referencing them.
+
+```json
+"navigation": {
+  "groups": [
+    { "group": "Get Started", "pages": ["introduction", "quickstart"] },
+    { "group": "Guides", "pages": ["guides/setup", "guides/usage"] }
+  ]
+}
+```
+
+<Note>
+  Every page listed in navigation must have a corresponding MDX file in your repository. A page entry with no matching file causes a build error.
+</Note>
+
+## Tabs
+
+When your documentation has two or more clearly distinct sections, tabs let you split them into separate navigation trees. Each tab has a label that appears in the top tab bar, and its own set of groups.
+
+<Tip>
+  Use tabs when your docs serve 2+ clearly distinct audiences or content types — for example, a user guide alongside an API reference. Avoid tabs just for the sake of it; a single flat group structure is easier to navigate for smaller doc sets.
+</Tip>
+
+```json
+"navigation": {
+  "tabs": [
+    {
+      "tab": "Documentation",
+      "groups": [
+        { "group": "Get Started", "pages": ["introduction", "quickstart"] },
+        { "group": "Guides", "pages": ["guides/setup", "guides/usage"] }
+      ]
+    },
+    {
+      "tab": "API Reference",
+      "groups": [
+        { "group": "Overview", "pages": ["api-reference/introduction"] },
+        {
+          "group": "Endpoints",
+          "pages": [
+            "api-reference/users/list",
+            "api-reference/users/create",
+            "api-reference/users/delete"
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Nested pages
+
+You can nest pages inside subdirectories to keep your repository organized. The navigation path mirrors the file path relative to your docs root — just omit the `.mdx` extension.
+
+For example, the entry `"guides/setup"` maps to the file `guides/setup.mdx` in your repository. There is no limit on nesting depth, so deeply organized repos like the following work without any special configuration:
+
+```json
+"pages": [
+  "api-reference/authentication",
+  "api-reference/endpoints/users/list",
+  "api-reference/endpoints/users/create"
+]
+```
+
+These entries resolve to:
+
+```
+api-reference/authentication.mdx
+api-reference/endpoints/users/list.mdx
+api-reference/endpoints/users/create.mdx
+```
+
+## Icons on groups and pages
+
+You can attach an icon to any group to make it easier to scan the sidebar at a glance. Mintlify supports the full [Font Awesome](https://fontawesome.com/icons) icon set — use the icon's name as the `icon` value.
+
+```json
+"navigation": {
+  "groups": [
+    {
+      "group": "Get Started",
+      "icon": "rocket",
+      "pages": ["introduction", "quickstart"]
+    },
+    {
+      "group": "Guides",
+      "icon": "book-open",
+      "pages": ["guides/setup", "guides/usage"]
+    },
+    {
+      "group": "API Reference",
+      "icon": "code",
+      "pages": ["api-reference/introduction"]
+    }
+  ]
+}
+```
+
+You can also set an icon directly on a page from within that page's frontmatter:
+
+```mdx
+---
+title: "Quickstart"
+icon: "bolt"
+---
+```
+
+## Global anchors
+
+Global anchors appear at the bottom of the sidebar and are ideal for external links that apply to your entire docs site — things like a changelog, a community forum, or a live status page. You configure them under `navigation.global.anchors`.
+
+```json
+"navigation": {
+  "global": {
+    "anchors": [
+      {
+        "anchor": "API Reference",
+        "icon": "rectangle-terminal",
+        "href": "https://yourcompany.com/api"
+      },
+      {
+        "anchor": "Community",
+        "icon": "discord",
+        "href": "https://discord.gg/yourinvite"
+      },
+      {
+        "anchor": "Changelog",
+        "icon": "list",
+        "href": "https://yourcompany.com/changelog"
+      }
+    ]
+  },
+  "groups": [
+    { "group": "Get Started", "pages": ["introduction", "quickstart"] }
+  ]
+}
+```
+
+Each anchor accepts the following fields:
+
+<ParamField path="anchor" type="string" required>
+  The display label shown next to the icon in the sidebar footer.
+</ParamField>
+
+<ParamField path="href" type="string" required>
+  The URL the anchor links to. Can be an internal path or an external URL.
+</ParamField>
+
+<ParamField path="icon" type="string">
+  A Font Awesome icon name to display alongside the anchor label.
+</ParamField>

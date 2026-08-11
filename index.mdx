@@ -1,20 +1,53 @@
 ---
-title: "Introduction"
-description: "Welcome to your project"
+title: "Mintlify: Beautiful Docs from Your Git Repo"
+sidebarTitle: "Home"
+description: "Build, publish, and maintain world-class documentation with Mintlify. Git-based workflow, AI writing tools, rich components, and instant deploys."
 ---
 
-Write a short description of your product here. What it does, who it's for, and what they can accomplish with it.
+Welcome to Mintlify — the documentation platform built for modern developer teams. Connect your Git repository, write pages in MDX, and ship a beautiful, fully hosted docs site without managing any infrastructure. Every push to your repo is a deploy.
 
-<Tip>
-  Ready to make this your own? Start by editing this page. Update your `docs.json` file to customize your site. Then fill out the [Quickstart](/quickstart) page.
-</Tip>
+<CardGroup cols={2}>
+  <Card title="Introduction" icon="book" href="/introduction">
+    Learn what Mintlify is, how it works, and why thousands of teams use it to ship world-class docs.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create your account, connect your repo, and publish your first page in under five minutes.
+  </Card>
+  <Card title="Components" icon="code" href="/authoring/components">
+    Explore the full library of interactive MDX components — cards, tabs, accordions, code blocks, and more.
+  </Card>
+  <Card title="AI Writing" icon="wand-magic-sparkles" href="/ai/ai-writing">
+    Use Mintlify's built-in AI tools to draft, improve, and maintain your documentation automatically.
+  </Card>
+</CardGroup>
 
-<Card title="Quickstart" icon="rocket" href="/quickstart">
-  This card links to the quickstart page in your project.
-</Card>
-<Card title="Components" icon="puzzle-piece" href="https://mintlify.com/docs/components">
-  Add cards, callouts, steps, tabs, and more to design and structure your pages.
-</Card>
-<Card title="Settings" icon="gear" href="https://mintlify.com/docs/organize/settings">
-  Set your site name, branding, and navigation in the `docs.json` file.
-</Card>
+## Get up and running in four steps
+
+<Steps>
+  <Step title="Create your account">
+    Sign up at [app.mintlify.com](https://app.mintlify.com). No credit card required to get started.
+  </Step>
+  <Step title="Connect your repository">
+    Link your GitHub or GitLab repository from the Mintlify dashboard. Mintlify watches your default branch for changes.
+  </Step>
+  <Step title="Configure docs.json">
+    Open `docs.json` at the root of your docs folder. Set your site name, colors, logo, and navigation structure.
+  </Step>
+  <Step title="Push to deploy">
+    Commit your MDX pages and push to your connected branch. Mintlify builds and publishes your site automatically — no CI pipeline required.
+  </Step>
+</Steps>
+
+## Explore the platform
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="gear" href="/configuration/settings">
+    Customize your site's branding, navigation, custom domains, and advanced settings through `docs.json`.
+  </Card>
+  <Card title="GitHub Integration" icon="github" href="/publishing/github-integration">
+    Learn how Mintlify connects to your repository, handles branch previews, and triggers deployments on push.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+    Auto-generate interactive API reference pages from your OpenAPI spec with zero extra configuration.
+  </Card>
+</CardGroup>

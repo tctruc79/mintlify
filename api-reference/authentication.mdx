@@ -1,0 +1,79 @@
+---
+title: "Authenticate Requests to the Mintlify API"
+sidebarTitle: "Authentication"
+description: "Generate an API key from the Mintlify dashboard and pass it in the Authorization header to authenticate all API requests."
+---
+
+All Mintlify API requests are authenticated with API keys. You generate a key from your dashboard and pass it as a Bearer token in every request. There are no session cookies or OAuth flows — just a single header that identifies and authorizes your requests.
+
+## Generate an API Key
+
+API keys are created and managed from the Mintlify dashboard. Each key can be named and revoked independently, making it easy to manage access across multiple environments or team members.
+
+<Steps>
+  <Step title="Sign in to your Mintlify dashboard">
+    Go to [app.mintlify.com](https://app.mintlify.com) and sign in to your account.
+  </Step>
+  <Step title="Open API key settings">
+    Navigate to **Settings → API Keys** in the left sidebar.
+  </Step>
+  <Step title="Generate a new key">
+    Click **Generate New Key** to open the creation dialog.
+  </Step>
+  <Step title="Name your key">
+    Give the key a descriptive name that reflects its purpose — for example, `CI/CD pipeline` or `Local development`. Then click **Create**.
+  </Step>
+  <Step title="Copy the key">
+    Copy the key immediately and store it somewhere safe. **It is only shown once** and cannot be retrieved after you close the dialog.
+  </Step>
+</Steps>
+
+<Warning>
+  Store your API key securely. Never commit it to version control or expose it
+  in client-side code. Use environment variables or a secrets manager to inject
+  it at runtime.
+</Warning>
+
+## Using Your API Key
+
+Pass your API key as a Bearer token in the `Authorization` header of every request. Replace `YOUR_API_KEY` with the key you generated from the dashboard.
+
+```bash
+curl https://api.mintlify.com/v1/deployments \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+For environments where you store the key as an environment variable, you can reference it directly:
+
+```bash
+curl https://api.mintlify.com/v1/deployments \
+  -H "Authorization: Bearer $MINTLIFY_API_KEY"
+```
+
+## Authentication Errors
+
+If a request fails authentication, the API returns one of the following HTTP error codes:
+
+| Status Code | Error Code | Description |
+|---|---|---|
+| `401 Unauthorized` | `INVALID_API_KEY` | The `Authorization` header is missing, malformed, or contains an invalid key. |
+| `403 Forbidden` | `INSUFFICIENT_PERMISSIONS` | The API key is valid but does not have permission to perform the requested action. |
+
+Both errors follow the standard error response format:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_API_KEY",
+    "message": "The provided API key is invalid or has been revoked."
+  }
+}
+```
+
+<Tip>
+  Create separate API keys for different environments — for example, one for
+  your CI/CD pipeline, one for local testing, and one for production
+  integrations. That way, you can revoke a single key without disrupting other
+  workflows.
+</Tip>

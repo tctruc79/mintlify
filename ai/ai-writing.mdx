@@ -1,0 +1,55 @@
+---
+title: "Write Better Docs Faster with Mintlify AI"
+sidebarTitle: "AI Writing"
+description: "Mintlify integrates AI writing assistance directly into your docs workflow. Generate, improve, and maintain documentation with AI tools like Claude and ChatGPT."
+---
+
+Mintlify brings AI writing directly into your documentation workflow. Whether you use Claude, ChatGPT, Cursor, or Windsurf, Mintlify's AI integrations help you write, improve, and maintain docs faster — so you spend less time on upkeep and more time shipping.
+
+## What you can do with AI
+
+AI tools connected to Mintlify help you throughout the entire documentation lifecycle, from first draft to long-term maintenance.
+
+- **Generate first drafts** from code or outlines — point your AI tool at a function, API endpoint, or rough outline and get a structured doc page back
+- **Improve clarity and fix grammar** — ask your AI assistant to rewrite a section in plain language or tighten up verbose explanations
+- **Keep docs in sync as APIs evolve** — use AI to spot and update outdated references when your codebase changes
+- **Ask questions about your own docs** — use MCP or contextual AI links to query your published documentation as a live knowledge base
+
+## Contextual AI panel
+
+When readers visit your published docs site, Mintlify surfaces a contextual menu on every page. This menu gives them one-click access to AI tools that can answer questions about that specific page — using the content they're already reading as context.
+
+You configure which options appear in the contextual menu via `docs.json`. The full list of available options is:
+
+- `copy` — copy the page content to clipboard
+- `view` — view the raw page source
+- `chatgpt` — open the page in ChatGPT
+- `claude` — open the page in Claude
+- `perplexity` — search with Perplexity using page context
+- `mcp` — connect your docs to an MCP-compatible AI tool
+- `cursor` — open the page in Cursor
+- `vscode` — open the page in VS Code Copilot
+
+Add the `contextual` key to your `docs.json` to enable and configure this panel:
+
+```json
+"contextual": {
+  "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+}
+```
+
+You can include any subset of these options. The order you list them is the order they appear in the menu.
+
+## AI tools for writing
+
+Beyond the contextual panel, you can configure AI coding tools — like Claude Code, Cursor, and Windsurf — with Mintlify's documentation skill. Once installed, these tools understand Mintlify components, MDX syntax, and writing conventions, so every doc they generate fits your site out of the box.
+
+<CardGroup cols={1}>
+  <Card
+    title="Set Up AI Tools"
+    icon="wand-magic-sparkles"
+    href="/ai/ai-tools-setup"
+  >
+    Install the Mintlify skill for Claude Code, Cursor, Windsurf, and VS Code Copilot to get context-aware doc generation.
+  </Card>
+</CardGroup>

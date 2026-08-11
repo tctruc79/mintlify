@@ -1,0 +1,79 @@
+---
+title: "Set Up a Custom Domain for Your Mintlify Site"
+sidebarTitle: "Custom Domain"
+description: "Point your own domain or subdomain to your Mintlify docs site. Configure DNS records and verify ownership in the Mintlify dashboard."
+---
+
+By default, your Mintlify site is accessible at a subdomain under `mintlify.app`. You can point any custom domain or subdomain to your docs in just a few steps — no server configuration required. Once verified, Mintlify automatically provisions and renews your SSL certificate.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- Access to the DNS settings for your domain (through your domain registrar or DNS provider)
+- A Mintlify account on the **Pro plan or higher**
+
+## Setup steps
+
+<Steps>
+  <Step title="Open Custom Domain settings">
+    Log in to the [Mintlify dashboard](https://dashboard.mintlify.com) and navigate to **Settings → Custom Domain**. This page is where you manage all domain configuration for your site.
+  </Step>
+  <Step title="Enter your desired domain">
+    Type the domain or subdomain you want to use — for example, `docs.yourcompany.com`. Most teams use a subdomain like `docs.` to keep their main domain separate from the documentation site. Click **Save** to continue.
+  </Step>
+  <Step title="Copy the CNAME record value">
+    After saving, Mintlify displays a CNAME record value. Copy this value — you'll need it in the next step. It looks something like `hosting.mintlify.app`.
+  </Step>
+  <Step title="Add a CNAME record at your DNS provider">
+    Log in to your domain registrar or DNS provider and create a new DNS record with the following values:
+
+    | Field | Value |
+    |-------|-------|
+    | **Type** | `CNAME` |
+    | **Name / Host** | `docs` (or whichever subdomain you chose) |
+    | **Value / Target** | The value you copied from the Mintlify dashboard |
+    | **TTL** | `3600` (or your provider's default) |
+
+    Save the record. DNS changes can take anywhere from a few minutes to 48 hours to propagate globally.
+  </Step>
+  <Step title="Verify ownership in the dashboard">
+    Return to **Settings → Custom Domain** in the Mintlify dashboard and click **Verify**. Mintlify checks for your CNAME record and confirms ownership. If DNS hasn't fully propagated yet, wait a few minutes and try again.
+  </Step>
+  <Step title="SSL certificate provisioned automatically">
+    Once your domain is verified, Mintlify automatically provisions a free SSL certificate for your domain. Your docs site will be available over HTTPS — no additional configuration required on your end.
+  </Step>
+</Steps>
+
+<Note>
+  Mintlify handles HTTPS entirely — you don't need to upload certificates, configure TLS, or manage renewals. SSL provisioning typically completes within a few minutes of successful domain verification.
+</Note>
+
+## Troubleshooting
+
+If something isn't working as expected after following the steps above, the issues below cover the most common causes.
+
+<AccordionGroup>
+  <Accordion title="CNAME not verifying">
+    DNS propagation can take up to 48 hours depending on your provider and the TTL value set on your record. Before contacting support, use a public DNS checker (such as [dnschecker.org](https://dnschecker.org)) to confirm that your CNAME record is visible from multiple locations around the world.
+
+    Double-check that:
+    - The **Name/Host** field is set to only the subdomain portion (e.g., `docs`) — not the full domain (e.g., `docs.yourcompany.com`)
+    - The **Value/Target** exactly matches the string Mintlify provided — no extra spaces or characters
+    - You haven't accidentally created a conflicting `A` record for the same subdomain
+  </Accordion>
+  <Accordion title="Site still shows the mintlify.app domain">
+    If your CNAME has been verified but your browser still shows the old `mintlify.app` URL, try the following:
+
+    - **Clear your browser cache** — cached DNS results can persist even after the records have updated
+    - **Wait for TTL expiry** — if your old record had a long TTL, resolvers may continue using the cached value until it expires
+    - **Try an incognito/private window** — this bypasses most local caching and gives you a clean lookup
+  </Accordion>
+  <Accordion title="SSL certificate not provisioning">
+    SSL provisioning begins automatically as soon as domain verification succeeds. In most cases, the certificate appears within a few minutes. If your domain shows as verified in the dashboard but HTTPS is still not working after **1 hour**, reach out to [Mintlify support](https://mintlify.com/support) with your domain name and account email — the team can manually trigger provisioning or investigate any errors.
+
+    <Warning>
+      Do not attempt to manually upload a certificate through your DNS provider or CDN for the same subdomain. Conflicts between Mintlify's provisioned certificate and an externally managed one can prevent HTTPS from working correctly.
+    </Warning>
+  </Accordion>
+</AccordionGroup>

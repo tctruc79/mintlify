@@ -1,47 +1,90 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with Mintlify in 5 Minutes"
+sidebarTitle: "Quickstart"
+description: "Create your Mintlify docs site, connect your GitHub repo, and publish your first page in under 5 minutes."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+This guide walks you through creating a Mintlify account, connecting a GitHub repository, and publishing your first documentation page — all in under five minutes. By the end, you'll have a live docs site with your own content, ready to share with the world.
 
 ## Prerequisites
 
-Before you begin, you must have:
+Before you begin, make sure you have the following:
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+- **A GitHub account** — Mintlify connects to GitHub to watch your repository for changes. GitLab support is also available.
+- **Node.js 18 or later** — Required only if you want to preview your docs locally before pushing. You can skip this for now and install it later.
 
-## Get started
+## Create and publish your docs site
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Create your Mintlify account">
+    Go to [app.mintlify.com](https://app.mintlify.com) and sign up for a free account. You can authenticate with your GitHub account to speed up the next step. No credit card is required.
+  </Step>
+  <Step title="Create a new docs project">
+    From the Mintlify dashboard, click **New Project**. Give your project a name — this is the internal identifier for your site, not the public display name. Mintlify will scaffold a starter repository for you automatically.
+  </Step>
+  <Step title="Connect your GitHub repository">
+    When prompted, authorize the Mintlify GitHub App and select the repository where your docs will live. If you're starting fresh, choose the repository Mintlify just scaffolded. If you're adding docs to an existing project, select that repo instead and copy the starter `docs.json` into it.
+  </Step>
+  <Step title="Clone the repo and open docs.json">
+    Clone your connected repository to your local machine and open `docs.json` in your editor. This file is the control center for your docs site.
 
     ```bash
-    npm install your-package
+    git clone https://github.com/your-org/your-docs-repo.git
+    cd your-docs-repo
     ```
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+  <Step title="Customize your name and colors">
+    Update the `name` and `colors` fields in `docs.json` to match your product's branding. The `primary` color controls buttons, links, and active navigation highlights.
 
-    ```bash
-    your-cli init
+    ```json docs.json
+    {
+      "name": "Acme Docs",
+      "colors": {
+        "primary": "#0066FF",
+        "light": "#3385FF",
+        "dark": "#0047B3"
+      }
+    }
     ```
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+  <Step title="Add your first page">
+    Create a new MDX file at the root of your docs folder (or in a subfolder) and write your first page. Every MDX file needs a frontmatter block at the top with at least a `title`.
+
+    ```mdx getting-started.mdx
+    ---
+    title: "Getting Started"
+    description: "Everything you need to get up and running with Acme."
+    ---
+
+    Welcome to Acme! This guide will help you get started quickly.
+    ```
+
+    Then add the new page to the `navigation` section of `docs.json` so it appears in the sidebar:
+
+    ```json docs.json
+    {
+      "navigation": [
+        {
+          "group": "Overview",
+          "pages": ["getting-started"]
+        }
+      ]
+    }
+    ```
+  </Step>
+  <Step title="Push to GitHub">
+    Commit your changes and push to your connected branch. Mintlify detects the push and deploys your updated site automatically.
 
     ```bash
-    your-cli start
+    git add .
+    git commit -m "Add first docs page"
+    git push
     ```
+
+    Head back to the Mintlify dashboard to see your deployment status. Your live site URL is shown at the top of the project overview — click it to see your new page in production.
   </Step>
 </Steps>
 
 <Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+  Before pushing, you can preview every change on your local machine using the Mintlify CLI. Install it with `npm install -g mint`, then run `mint dev` from your docs folder to open a live preview at `http://localhost:3000`. See the [Local Preview](/local-development) guide for full setup instructions.
 </Tip>

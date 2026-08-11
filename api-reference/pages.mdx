@@ -1,0 +1,199 @@
+---
+title: "Pages API — Manage Documentation Pages"
+sidebarTitle: "Pages"
+description: "List, retrieve, and update documentation pages via the Mintlify API. Automate content management and integrate docs into your publishing workflows."
+---
+
+The Pages API lets you list and retrieve metadata about pages in your Mintlify docs site. Use it to automate content audits, check page status, or integrate with external content systems — for example, syncing page titles and descriptions into a search index or analytics dashboard.
+
+<Note>
+  Page content itself is managed through your Git repository. The API manages
+  metadata only. To update page content, commit changes to your `.mdx` files
+  and trigger a new deployment.
+</Note>
+
+## List Pages
+
+Retrieve a paginated list of all pages in a project. Use the `limit` and `offset` parameters to page through large doc sites.
+
+```bash
+curl "https://api.mintlify.com/v1/pages?projectId=proj_xxx&limit=20&offset=0" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+### Query Parameters
+
+<ParamField query="projectId" type="string" required>
+  The unique identifier of the Mintlify project whose pages you want to list.
+  Find your project ID in **Settings → General** in the dashboard.
+</ParamField>
+
+<ParamField query="limit" type="integer" default="20">
+  The maximum number of pages to return in a single response. Accepts values
+  between `1` and `100`.
+</ParamField>
+
+<ParamField query="offset" type="integer" default="0">
+  The number of pages to skip before returning results. Use this alongside
+  `limit` to paginate through all pages.
+</ParamField>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "pages": [
+      {
+        "id": "page_abc123",
+        "slug": "getting-started/quickstart",
+        "title": "Quickstart",
+        "description": "Get up and running with Mintlify in under five minutes.",
+        "lastUpdated": "2024-01-15T10:30:00Z"
+      },
+      {
+        "id": "page_def456",
+        "slug": "api-reference/authentication",
+        "title": "Authentication",
+        "description": "Authenticate requests to the Mintlify API.",
+        "lastUpdated": "2024-01-12T08:00:00Z"
+      }
+    ],
+    "total": 84,
+    "limit": 20,
+    "offset": 0
+  }
+}
+```
+
+<ResponseField name="pages" type="array">
+  An array of page objects matching your query.
+
+  <ResponseField name="pages[].id" type="string">
+    The unique identifier for the page.
+  </ResponseField>
+
+  <ResponseField name="pages[].slug" type="string">
+    The URL slug for the page, relative to your docs root. For example,
+    `getting-started/quickstart`.
+  </ResponseField>
+
+  <ResponseField name="pages[].title" type="string">
+    The page title, sourced from the `title` field in the page's frontmatter.
+  </ResponseField>
+
+  <ResponseField name="pages[].description" type="string">
+    The page description, sourced from the `description` field in frontmatter.
+  </ResponseField>
+
+  <ResponseField name="pages[].lastUpdated" type="string">
+    ISO 8601 timestamp of the most recent update to the page.
+  </ResponseField>
+</ResponseField>
+
+<ResponseField name="total" type="integer">
+  The total number of pages in the project, regardless of pagination.
+</ResponseField>
+
+---
+
+## Get a Page
+
+Retrieve full metadata for a single page by its ID.
+
+```bash
+curl https://api.mintlify.com/v1/pages/page_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "page_abc123",
+    "slug": "getting-started/quickstart",
+    "title": "Quickstart",
+    "description": "Get up and running with Mintlify in under five minutes.",
+    "lastUpdated": "2024-01-15T10:30:00Z",
+    "projectId": "proj_xxx",
+    "status": "published"
+  }
+}
+```
+
+<ResponseField name="id" type="string">
+  The unique identifier for the page.
+</ResponseField>
+
+<ResponseField name="slug" type="string">
+  The URL slug for the page, relative to your docs root.
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  The page title from frontmatter.
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  The page description from frontmatter.
+</ResponseField>
+
+<ResponseField name="lastUpdated" type="string">
+  ISO 8601 timestamp of the most recent update to the page.
+</ResponseField>
+
+<ResponseField name="projectId" type="string">
+  The ID of the project this page belongs to.
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  The publication status of the page. One of `published` or `draft`.
+</ResponseField>
+
+---
+
+## Update Page Metadata
+
+Update a page's metadata — such as its title or description — without editing the `.mdx` file directly. This is useful for making quick corrections or syncing metadata from an external content system.
+
+```bash
+curl -X PATCH https://api.mintlify.com/v1/pages/page_abc123 \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Quickstart Guide",
+    "description": "Get up and running with Mintlify in under five minutes."
+  }'
+```
+
+### Request Body
+
+<ParamField body="title" type="string">
+  The updated title for the page. Overrides the `title` field in the page's
+  frontmatter until the next deployment, at which point the frontmatter value
+  takes precedence.
+</ParamField>
+
+<ParamField body="description" type="string">
+  The updated description for the page. Must be between 1 and 160 characters
+  for best results in search engine previews.
+</ParamField>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "page_abc123",
+    "slug": "getting-started/quickstart",
+    "title": "Quickstart Guide",
+    "description": "Get up and running with Mintlify in under five minutes.",
+    "lastUpdated": "2024-01-16T09:15:00Z",
+    "projectId": "proj_xxx",
+    "status": "published"
+  }
+}
+```

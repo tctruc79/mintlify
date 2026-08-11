@@ -1,0 +1,101 @@
+---
+title: "Writing Docs Pages in Mintlify MDX"
+sidebarTitle: "Pages"
+description: "Create and structure documentation pages using MDX files. Learn about frontmatter, page metadata, and organizing content with headings and sections."
+---
+
+Pages in Mintlify are MDX files — Markdown with JSX support. Every `.mdx` file in your repository maps directly to a URL based on its file path, so the structure of your docs site mirrors the structure of your project folder. You write content in familiar Markdown, drop in components where you need richer formatting, and Mintlify handles the rest.
+
+## Page frontmatter
+
+Every page begins with a YAML frontmatter block delimited by `---`. Mintlify reads these fields to build your sidebar, set browser metadata, and style the page header.
+
+| Field | Required | Description |
+|---|---|---|
+| `title` | ✅ Yes | Shown in the browser tab and as the H1 page header |
+| `sidebarTitle` | No | Overrides `title` in the sidebar navigation only |
+| `description` | No | Used as the SEO meta description for the page |
+| `icon` | No | A Font Awesome icon slug shown next to the page title in the sidebar |
+
+Here is a complete frontmatter example showing all four fields together:
+
+```mdx
+---
+title: "Getting Started with the Payments API"
+sidebarTitle: "Getting Started"
+description: "Learn how to authenticate and make your first request to the Payments API in under five minutes."
+icon: "bolt"
+---
+```
+
+<Note>
+  The `title` field is the only required frontmatter key. All other fields are optional but recommended — `description` in particular has a direct impact on search engine visibility.
+</Note>
+
+## Page content
+
+Everything below the closing `---` of your frontmatter is standard Markdown. Mintlify renders all common Markdown syntax with no additional configuration.
+
+**Headings** use `#` prefixes. Use `##` for top-level sections and `###` for subsections — avoid jumping levels, as this affects both readability and accessibility:
+
+```mdx
+## Installation
+
+### Prerequisites
+
+### Install the package
+```
+
+**Emphasis** uses asterisks or underscores:
+
+```mdx
+This is **bold text** and this is _italic text_.
+```
+
+**Lists** work as you'd expect:
+
+```mdx
+- Unordered item one
+- Unordered item two
+  - Nested item
+
+1. First ordered step
+2. Second ordered step
+3. Third ordered step
+```
+
+**Links** use standard Markdown syntax. Use relative paths for internal links so they stay valid across environments:
+
+```mdx
+[Read the authentication guide](/guides/authentication)
+[Visit our website](https://mintlify.com)
+```
+
+## Folder structure and URLs
+
+Mintlify derives the URL of each page directly from its file path within your repository. The mapping is straightforward: the file extension is dropped and the remaining path becomes the URL slug.
+
+| File path | Resulting URL |
+|---|---|
+| `index.mdx` | `/` |
+| `quickstart.mdx` | `/quickstart` |
+| `guides/setup.mdx` | `/guides/setup` |
+| `api-reference/authentication.mdx` | `/api-reference/authentication` |
+
+You can nest folders as deeply as you need. Keep folder and file names lowercase with hyphens (no spaces or underscores) to produce clean, readable URLs.
+
+<Note>
+  Creating an MDX file is not enough to make a page appear in your sidebar. You must also add its path to the `navigation` array in `docs.json`. See the [navigation configuration guide](/configuration/navigation) for details.
+</Note>
+
+## Hiding a page from navigation
+
+You can publish a page without listing it in the sidebar by simply omitting it from the `navigation` array in `docs.json`. The page file still exists in your repository and is fully accessible to anyone with the direct URL — it just won't be linked from the sidebar or any auto-generated navigation.
+
+This is useful for:
+
+- **Changelog entries** you want to link to from release notes but not surface in the main sidebar
+- **Internal draft pages** you're iterating on before a public launch
+- **Deep-link targets** referenced from other pages but not worth a dedicated sidebar slot
+
+To bring a hidden page back into the sidebar, add its path to the appropriate `navigation` group in `docs.json` and redeploy.

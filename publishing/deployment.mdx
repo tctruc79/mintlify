@@ -1,0 +1,94 @@
+---
+title: "How Mintlify Deploys and Serves Your Documentation"
+sidebarTitle: "Deployment"
+description: "Understand the Mintlify build and deploy pipeline. Docs go live within seconds of a Git push, with preview deployments available for pull requests."
+---
+
+Every time you push to your connected branch, Mintlify automatically builds and deploys your documentation. Builds typically complete in under 30 seconds, and your changes are served globally from the edge — no manual deploys, no waiting, and no infrastructure to manage.
+
+## Deployment flow
+
+When you push a commit to your connected branch, the following sequence happens automatically:
+
+<Steps>
+  <Step title="GitHub notifies Mintlify">
+    The Mintlify GitHub App receives a webhook event from GitHub the moment your push lands. No polling — the notification is instant.
+  </Step>
+  <Step title="Mintlify fetches the latest commit">
+    Mintlify clones the latest state of your connected branch, scoped to the docs folder you configured.
+  </Step>
+  <Step title="MDX files and docs.json are validated">
+    Mintlify parses your `docs.json` navigation config and all referenced MDX files, checking for syntax errors, missing pages, and schema violations before attempting a build.
+  </Step>
+  <Step title="The site is built and served from the edge">
+    Mintlify compiles your MDX content into a static documentation site and distributes it across its global edge network. Your site loads fast for readers everywhere.
+  </Step>
+  <Step title="Your custom domain points to the new version">
+    If you have a custom domain configured, it automatically resolves to the newly deployed version. There is no DNS change required — traffic cutover happens transparently.
+  </Step>
+</Steps>
+
+## Preview deployments
+
+Pull request previews let you review documentation changes before they reach your live site. When you open a pull request against your connected branch, Mintlify generates a unique preview URL that reflects exactly what the docs will look like after merging.
+
+To enable preview deployments:
+
+1. Go to **Settings → GitHub Integration** in the Mintlify dashboard.
+2. Toggle **Enable preview deployments** to on.
+3. Open a pull request on GitHub — Mintlify will post a comment on the PR with the preview URL.
+
+<Tip>
+  Share the preview URL with teammates or stakeholders for review before merging. The preview URL stays live for as long as the pull request is open and updates automatically on every new commit to the PR branch.
+</Tip>
+
+## Build status
+
+You can monitor the status of every deployment from the **Deployments** tab in the Mintlify dashboard. Each entry shows the commit SHA, the author, a timestamp, and the current build status.
+
+Build states you may see:
+
+| Status | Meaning |
+| --- | --- |
+| **Building** | Mintlify is actively fetching and compiling your docs. |
+| **Live** | The deployment succeeded and is serving traffic. |
+| **Failed** | The build encountered an error and was not deployed. |
+
+### Common causes of failed builds
+
+<Accordion title="Syntax errors in MDX files">
+  Invalid JSX syntax, unclosed component tags, or malformed frontmatter will cause the MDX parser to fail. Run `mint validate` locally to catch these before pushing.
+</Accordion>
+
+<Accordion title="Missing pages referenced in docs.json">
+  If your `docs.json` navigation references a page path that doesn't exist in your repository, the build will fail. Double-check that every path in your `navigation` array corresponds to a real `.mdx` file.
+</Accordion>
+
+<Accordion title="Invalid docs.json schema">
+  A malformed `docs.json` — such as a missing required field or an incorrect property type — will prevent Mintlify from reading your configuration. Validate your file against the [docs.json settings reference](/configuration/settings) before pushing.
+</Accordion>
+
+<Tip>
+  Run `mint validate` locally before pushing to catch MDX syntax errors, missing pages, and `docs.json` schema issues before they cause a failed build in production.
+
+  ```bash
+  mint validate
+  ```
+</Tip>
+
+## Rollback
+
+If a deployment introduces a problem, you can roll back to a previous version in two ways:
+
+**Option 1 — Revert the Git commit.** Revert the offending commit in your repository and push the revert to your connected branch. Mintlify treats the revert like any other push and deploys the previous state of your docs automatically.
+
+```bash
+git revert HEAD
+git push origin main
+```
+
+**Option 2 — Roll back from the dashboard.** In the **Deployments** tab, find the last known-good deployment, click the overflow menu (**⋯**), and select **Redeploy**. Mintlify re-serves that build immediately without requiring a Git change.
+
+<Warning>
+  A dashboard rollback re-deploys the selected build as-is but does not change your Git history. If you push a new commit after rolling back without addressing the underlying issue, the broken build will be deployed again. Prefer a Git revert when you want the rollback to be permanent.
+</Warning>

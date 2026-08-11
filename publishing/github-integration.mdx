@@ -1,0 +1,90 @@
+---
+title: "Connect Mintlify to Your GitHub Repository"
+sidebarTitle: "GitHub Integration"
+description: "Install the Mintlify GitHub app to enable automatic deployment. Every push to your default branch updates your live documentation site within seconds."
+---
+
+Mintlify deploys documentation directly from your GitHub repository. Install the Mintlify GitHub app once, and every push to your main branch automatically updates your live site — no CI/CD configuration required. There is nothing to maintain: no build scripts, no deployment pipelines, and no server infrastructure to manage.
+
+## Prerequisites
+
+Before you begin, make sure you have the following:
+
+<CardGroup cols={3}>
+  <Card title="Mintlify Account" icon="user">
+    A Mintlify account with an active workspace at [app.mintlify.com](https://app.mintlify.com).
+  </Card>
+  <Card title="GitHub Account" icon="github">
+    A GitHub account with access to the repository where your documentation lives.
+  </Card>
+  <Card title="Admin Access" icon="shield-check">
+    Admin permissions on the GitHub repository you want to connect to Mintlify.
+  </Card>
+</CardGroup>
+
+## Connecting your repository
+
+<Steps>
+  <Step title="Sign in to the Mintlify dashboard">
+    Go to [app.mintlify.com](https://app.mintlify.com) and sign in to your account. If you don't have a workspace yet, create one before continuing.
+  </Step>
+  <Step title="Open GitHub Integration settings">
+    In the left sidebar, navigate to **Settings → GitHub Integration**. This is where you manage the connection between Mintlify and your GitHub account.
+  </Step>
+  <Step title="Install the Mintlify GitHub App">
+    Click **Install GitHub App**. GitHub will open an authorization screen asking you to grant Mintlify read access to your repositories. Review the permissions and click **Authorize**.
+  </Step>
+  <Step title="Select your repository">
+    After authorization, return to the Mintlify dashboard. Use the repository picker to select the GitHub repository where your documentation lives.
+  </Step>
+  <Step title="Choose your deployment branch">
+    Specify the branch Mintlify should deploy from. The default is `main`, but you can enter any branch name that exists in your repository.
+  </Step>
+  <Step title="Set the docs folder (optional)">
+    If your `docs.json` file is not at the root of the repository — for example, if it lives inside a `docs/` subdirectory — enter the relative path to that folder in the **Docs folder** field.
+  </Step>
+  <Step title="Save and trigger the initial deployment">
+    Click **Save**. Mintlify immediately fetches your repository and triggers an initial deployment. Your documentation site will be live within seconds.
+  </Step>
+</Steps>
+
+## Branch protection
+
+By default, Mintlify deploys from whichever branch you specify during setup. If your team follows a branching strategy — for example, keeping a dedicated `docs` branch separate from `main` — you can point Mintlify at that branch instead.
+
+To change the deployment branch at any time, go to **Settings → GitHub Integration** and update the **Branch** field. Mintlify will begin deploying from the new branch on the next push.
+
+<Note>
+  Changing the deployment branch does not trigger an automatic rebuild. Push a new commit to the updated branch to kick off the first deployment from it.
+</Note>
+
+## Monorepo support
+
+If your repository contains multiple projects and your documentation lives in a subdirectory rather than the repo root, Mintlify supports this layout out of the box. In the **Docs folder** field under **Settings → GitHub Integration**, enter the path to the directory that contains your `docs.json` file.
+
+For example, if your repository is structured like this:
+
+```
+my-monorepo/
+├── apps/
+│   └── backend/
+├── packages/
+│   └── sdk/
+└── docs/
+    ├── docs.json
+    └── introduction.mdx
+```
+
+You would enter `docs` as the docs folder path. Mintlify scopes all file resolution to that directory and ignores everything outside it.
+
+<Tip>
+  You can connect multiple Mintlify projects to the same repository — one per subdirectory — if you need to publish separate documentation sites from a single monorepo.
+</Tip>
+
+## Repository permissions
+
+<Note>
+  Mintlify only ever **reads** your repository. The GitHub App is granted read-only access and will never commit, push, or modify any files in your repository.
+</Note>
+
+If you ever want to revoke access, you can uninstall the Mintlify GitHub App directly from your GitHub account under **Settings → Applications → Installed GitHub Apps**.

@@ -1,0 +1,217 @@
+---
+title: "docs.json Reference: All Mintlify Settings"
+sidebarTitle: "Settings"
+description: "Complete reference for the docs.json configuration file. Control your site name, theme, colors, fonts, favicon, navigation, and more."
+---
+
+`docs.json` is the single configuration file for your Mintlify site. Place it at the root of your docs repository — every setting that controls your site's appearance, structure, and behavior lives here. When you push a change to this file, Mintlify rebuilds your site automatically.
+
+## Minimal example
+
+The following is a complete, working `docs.json` that gets you up and running with a named site, a theme, brand colors, and basic navigation.
+
+```json
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "My Docs",
+  "theme": "luma",
+  "colors": {
+    "primary": "#1be49c",
+    "light": "#0c8c5c",
+    "dark": "#0c0c0c"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navigation": {
+    "groups": [
+      { "group": "Get Started", "pages": ["introduction", "quickstart"] }
+    ]
+  }
+}
+```
+
+<Tip>
+  Add the `$schema` field to your `docs.json` to unlock autocompletion and inline validation in VS Code and other editors that support JSON Schema.
+</Tip>
+
+## Top-level fields
+
+These fields sit at the root of your `docs.json` object.
+
+<ParamField path="$schema" type="string">
+  URL pointing to the Mintlify JSON Schema. Set this to `https://mintlify.com/docs.json` to enable editor autocompletion and validation.
+</ParamField>
+
+<ParamField path="name" type="string" required>
+  The display name of your documentation site. Appears in the browser tab title and the default Open Graph metadata.
+</ParamField>
+
+<ParamField path="theme" type="string">
+  The visual theme for your site. Accepts one of the built-in theme names (see [Themes](#themes) below). Defaults to `luma`.
+</ParamField>
+
+<ParamField path="colors" type="object">
+  Brand color overrides applied across the site. Contains `primary`, `light`, and `dark` keys. See [Branding](/configuration/branding) for full details.
+</ParamField>
+
+<ParamField path="favicon" type="string">
+  Path or URL to your site's favicon. Accepts `.svg`, `.png`, or `.ico` formats. Recommended size: 32×32 or 64×64 pixels.
+</ParamField>
+
+<ParamField path="logo" type="object">
+  Logo image configuration. Contains `light` and `dark` keys, each accepting a local path or external URL. SVG format is recommended.
+</ParamField>
+
+<ParamField path="navigation" type="object" required>
+  Controls the sidebar structure of your site. Contains `groups`, `tabs`, and `global` sub-keys. See [Navigation](/configuration/navigation) for full details.
+</ParamField>
+
+<ParamField path="navbar" type="object">
+  Configuration for the top navigation bar. Accepts a `primary` action and an array of `links`.
+</ParamField>
+
+<ParamField path="footer" type="object">
+  Configuration for the site footer. Accepts a `socials` object with links to your social profiles.
+</ParamField>
+
+## Themes
+
+Mintlify ships with seven built-in themes. Each theme defines a distinct typographic and layout personality — pick the one that best matches your product's tone.
+
+<CardGroup cols={2}>
+  <Card title="luma" icon="sparkles">
+    Sleek and minimal. The default theme and an excellent choice for developer-focused products that want a clean, uncluttered reading experience.
+  </Card>
+  <Card title="willow" icon="leaf">
+    Elegant and refined. Works especially well for design-focused products and creative tools where aesthetics matter.
+  </Card>
+  <Card title="palm" icon="sun">
+    Spacious and airy. Generous whitespace and comfortable line heights make long-form content easy to read.
+  </Card>
+  <Card title="almond" icon="circle">
+    Soft and approachable. Rounded edges and warm neutrals make this a natural fit for consumer-facing and onboarding-heavy docs.
+  </Card>
+  <Card title="aspen" icon="bolt">
+    Bold and technical. High-contrast styling that suits infrastructure, DevOps, and platform engineering documentation.
+  </Card>
+  <Card title="maple" icon="book-open">
+    Warm and sidebar-focused. The sidebar takes center stage, making this ideal for large documentation sets with deep navigation trees.
+  </Card>
+  <Card title="sequoia" icon="table">
+    Dense and information-rich. Compact layout maximizes content density — the go-to choice for API-heavy products with extensive reference docs.
+  </Card>
+</CardGroup>
+
+## Navbar
+
+The `navbar` object controls what appears in the top navigation bar. You can add a primary call-to-action and a set of supplementary links.
+
+### `navbar.primary`
+
+The `primary` key renders a prominent button or link in the top-right area of the navbar.
+
+<ParamField path="navbar.primary.type" type="string">
+  The type of the primary navbar element. Accepted values: `button`, `github`, `link`.
+</ParamField>
+
+<ParamField path="navbar.primary.label" type="string">
+  Display text for the element. Required when `type` is `button` or `link`.
+</ParamField>
+
+<ParamField path="navbar.primary.href" type="string">
+  The URL the element links to. Required for all types.
+</ParamField>
+
+**Example — GitHub star button:**
+
+```json
+"navbar": {
+  "primary": {
+    "type": "github",
+    "href": "https://github.com/your-org/your-repo"
+  }
+}
+```
+
+**Example — Custom CTA button:**
+
+```json
+"navbar": {
+  "primary": {
+    "type": "button",
+    "label": "Get Started Free",
+    "href": "https://yourapp.com/signup"
+  }
+}
+```
+
+### `navbar.links`
+
+The `links` array adds supplementary navigation items to the navbar.
+
+<ParamField path="navbar.links[].label" type="string" required>
+  Display text for the link.
+</ParamField>
+
+<ParamField path="navbar.links[].href" type="string" required>
+  The URL the link points to.
+</ParamField>
+
+```json
+"navbar": {
+  "links": [
+    { "label": "Blog", "href": "https://yourcompany.com/blog" },
+    { "label": "Status", "href": "https://status.yourcompany.com" }
+  ]
+}
+```
+
+## Footer
+
+The `footer` object currently supports a `socials` key that renders social profile icons in the site footer.
+
+### `footer.socials`
+
+Each key in `socials` corresponds to a social platform. Set the value to your profile URL.
+
+<ParamField path="footer.socials.x" type="string">
+  Your X (formerly Twitter) profile URL.
+</ParamField>
+
+<ParamField path="footer.socials.github" type="string">
+  Your GitHub organization or user profile URL.
+</ParamField>
+
+<ParamField path="footer.socials.linkedin" type="string">
+  Your LinkedIn company or personal profile URL.
+</ParamField>
+
+<ParamField path="footer.socials.discord" type="string">
+  Your Discord server invite URL.
+</ParamField>
+
+<ParamField path="footer.socials.slack" type="string">
+  Your Slack community invite URL.
+</ParamField>
+
+<ParamField path="footer.socials.youtube" type="string">
+  Your YouTube channel URL.
+</ParamField>
+
+<ParamField path="footer.socials.website" type="string">
+  Your main website URL.
+</ParamField>
+
+```json
+"footer": {
+  "socials": {
+    "x": "https://x.com/yourcompany",
+    "github": "https://github.com/your-org",
+    "linkedin": "https://linkedin.com/company/yourcompany",
+    "discord": "https://discord.gg/yourinvite"
+  }
+}
+```

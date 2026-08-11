@@ -1,0 +1,218 @@
+---
+title: "Code Blocks and Syntax Highlighting in Mintlify"
+sidebarTitle: "Code Blocks"
+description: "Add syntax-highlighted code blocks with titles, line numbers, diff markers, and multi-language tabs. Mintlify uses Shiki for automatic theming."
+---
+
+Mintlify uses [Shiki](https://shiki.matsu.io) for syntax highlighting. Every code block is automatically styled to match your docs theme in both light and dark mode — no custom CSS, no configuration, no extra dependencies. You focus on the code; Mintlify handles the presentation.
+
+<Warning>
+  Never wrap code blocks in styled `div` elements or add manual background colors. Doing so overrides Shiki's theming and breaks consistency across light and dark mode.
+</Warning>
+
+## Basic code blocks
+
+Wrap your code in triple backticks and add a language identifier immediately after the opening fence. Mintlify uses the language tag to apply the correct syntax grammar.
+
+**JavaScript**
+
+```js
+async function fetchUser(userId) {
+  const response = await fetch(`/api/users/${userId}`);
+  return response.json();
+}
+```
+
+**Python**
+
+```python
+def fetch_user(user_id: str) -> dict:
+    response = requests.get(f"/api/users/{user_id}")
+    response.raise_for_status()
+    return response.json()
+```
+
+**Shell**
+
+```bash
+curl -X GET https://api.example.com/users/123 \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+Mintlify supports all [languages recognized by Shiki](https://shiki.matsu.io/languages). Use the short alias (`js`, `ts`, `py`, `sh`, `bash`, `yaml`, `json`, `mdx`, etc.) for best results.
+
+## Code block options
+
+You can enrich any code block with additional options by adding them as a space-separated list after the language tag.
+
+**Title / filename** — add a `title` attribute to label the block with a filename or descriptive heading:
+
+````mdx
+```ts title="lib/api.ts"
+export async function getUser(id: string) {
+  return fetch(`/api/users/${id}`).then(r => r.json());
+}
+```
+````
+
+```ts title="lib/api.ts"
+export async function getUser(id: string) {
+  return fetch(`/api/users/${id}`).then(r => r.json());
+}
+```
+
+**Line numbers** — add `lines` to render line numbers in the gutter:
+
+````mdx
+```python lines
+import os
+
+def main():
+    key = os.getenv("API_KEY")
+    print(f"Using key: {key}")
+```
+````
+
+**Highlight** — use `{n}` or `{n-m}` to highlight specific lines:
+
+````mdx
+```js {3-5}
+function setup(config) {
+  const client = new Client();
+  client.baseURL = config.url;
+  client.timeout = config.timeout;
+  client.retries = config.retries;
+  return client;
+}
+```
+````
+
+**Focus** — dim all lines except the ones you want to draw attention to:
+
+````mdx
+```ts focus={4}
+const client = new MintlifyClient({
+  apiKey: process.env.MINTLIFY_KEY,
+  project: "my-docs",
+  theme: "dark",   // <-- this line is in focus
+});
+```
+````
+
+**Wrap** — prevent horizontal scrolling by wrapping long lines:
+
+````mdx
+```bash wrap
+curl -X POST https://api.example.com/v1/documents/generate -H "Authorization: Bearer $TOKEN" -d '{"template":"onboarding","user_id":"u_123"}'
+```
+````
+
+**Expandable** — collapse a long code block behind a "show more" toggle:
+
+````mdx
+```json expandable
+{
+  "id": "doc_abc123",
+  "title": "Onboarding Guide",
+  "created_at": "2024-01-15T10:30:00Z",
+  "updated_at": "2024-03-22T08:45:00Z",
+  "status": "published",
+  "author": {
+    "id": "u_xyz789",
+    "name": "Ada Lovelace",
+    "email": "ada@example.com"
+  }
+}
+```
+````
+
+## Diff markers
+
+Highlight added and removed lines within a code block using Shiki's inline comment markers. This is ideal for migration guides and changelog entries that show what changed.
+
+Use `// [!code ++]` to mark a line as added and `// [!code --]` to mark it as removed:
+
+```js title="Before and after"
+function connect(options) {
+  const client = new Client(options.host); // [!code --]
+  const client = new Client(options.url); // [!code ++]
+  client.authenticate(options.apiKey); // [!code --]
+  client.authenticate(options.token); // [!code ++]
+  return client;
+}
+```
+
+````mdx
+```js title="Before and after"
+function connect(options) {
+  const client = new Client(options.host); // [!code --]
+  const client = new Client(options.url); // [!code ++]
+  client.authenticate(options.apiKey); // [!code --]
+  client.authenticate(options.token); // [!code ++]
+  return client;
+}
+```
+````
+
+Mintlify renders `--` lines with a red background and `++` lines with a green background, both calibrated for readability in light and dark mode.
+
+## CodeGroup for multiple languages
+
+Wrap multiple code blocks in a `<CodeGroup>` to display them as a tabbed group. This is the recommended pattern for showing the same operation in several languages or runtimes.
+
+<CodeGroup>
+
+```ts title="TypeScript"
+import { MintlifyClient } from "@mintlify/sdk";
+
+const client = new MintlifyClient({ apiKey: process.env.API_KEY });
+const page = await client.pages.get("quickstart");
+console.log(page.title);
+```
+
+```python title="Python"
+from mintlify import MintlifyClient
+
+client = MintlifyClient(api_key=os.environ["API_KEY"])
+page = client.pages.get("quickstart")
+print(page.title)
+```
+
+```bash title="cURL"
+curl https://api.mintlify.com/v1/pages/quickstart \
+  -H "Authorization: Bearer $API_KEY"
+```
+
+</CodeGroup>
+
+````mdx
+<CodeGroup>
+
+```ts title="TypeScript"
+import { MintlifyClient } from "@mintlify/sdk";
+
+const client = new MintlifyClient({ apiKey: process.env.API_KEY });
+const page = await client.pages.get("quickstart");
+console.log(page.title);
+```
+
+```python title="Python"
+from mintlify import MintlifyClient
+
+client = MintlifyClient(api_key=os.environ["API_KEY"])
+page = client.pages.get("quickstart")
+print(page.title)
+```
+
+```bash title="cURL"
+curl https://api.mintlify.com/v1/pages/quickstart \
+  -H "Authorization: Bearer $API_KEY"
+```
+
+</CodeGroup>
+````
+
+<Note>
+  Every code block inside a `<CodeGroup>` must have a `title` attribute. The title becomes the tab label. Blocks without a title will render without a selectable tab.
+</Note>
